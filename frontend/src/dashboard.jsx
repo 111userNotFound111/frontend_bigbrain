@@ -41,9 +41,9 @@ function Dashboard ({ token }) {
     console.log(quizzes)
   }
 
-  React.useEffect(async () => {
-    await fetchAllQuizzes();
-  }, [newQuizShow])
+  // React.useEffect(async () => {
+  //   await fetchAllQuizzes();
+  // }, [newQuizShow])
 
   return (
     <>

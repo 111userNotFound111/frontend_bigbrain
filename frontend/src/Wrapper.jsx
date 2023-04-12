@@ -24,8 +24,8 @@ function Wrapper () {
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       setToken(localStorage.getItem('token'))
-      if (!['/signup', '/signin'].includes(location.pathname)) {
-        navigate('/signin');
+      if (['/signup', '/signin'].includes(location.pathname)) {
+        navigate('/dashboard');
       }
     } else { // if not login (no token), navigate to signin
       if (!['/signup', '/signin'].includes(location.pathname)) {

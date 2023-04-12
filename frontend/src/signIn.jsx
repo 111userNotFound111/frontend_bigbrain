@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import callAPI from './callAPI.jsx'
 
 function Copyright (props) {
   return (
@@ -28,6 +29,8 @@ const theme = createTheme();
 
 // Wrapper -> SignIn
 export default function SignIn ({ onSuccess }) {
+  const [method] = React.useState('POST');
+  const [path] = React.useState('admin/auth/login');
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -41,27 +44,11 @@ export default function SignIn ({ onSuccess }) {
     });
   };
 
-  console.log('sign in function starts')
   async function login () {
-    console.log(email, password)
-    const response = await fetch('http://localhost:5005/admin/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      })
-    });
-    const data = await response.json();
-    if (data.error) {
-      console.log(data.error)
-      setErrorMessage(data.error);
-    } else {
-      onSuccess(data.token);
-      console.log(data)
-    }
+    console.log(email, password,)
+    callAPI(method, path, { email, password, })
+      .then((token) => { onSuccess(token) })
+      .catch((error) => setErrorMessage(error.message))
   }
 
   return (
