@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import callAPI from './callAPI.jsx'
 
 function Copyright (props) {
   return (
@@ -28,6 +29,8 @@ const theme = createTheme();
 
 // Wrapper -> SignUp
 export default function SignUp ({ onSuccess }) {
+  const [method] = React.useState('POST');
+  const [path] = React.useState('admin/auth/register');
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [name, setName] = React.useState('')
@@ -35,6 +38,7 @@ export default function SignUp ({ onSuccess }) {
   const [passwordWarning, setPasswordWarning] = React.useState()
   const [errorMessage, setErrorMessage] = React.useState('');
 
+  // prevent button from submit
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -44,29 +48,7 @@ export default function SignUp ({ onSuccess }) {
     });
   };
 
-  async function register () {
-    console.log(email, password, name)
-    const response = await fetch('http://localhost:5005/admin/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        name,
-      })
-    });
-    const data = await response.json();
-    if (data.error) {
-      console.log(data.error)
-      setErrorMessage(data.error);
-    } else {
-      onSuccess(data.token);
-      console.log(data)
-    }
-  }
-
+  // input validations
   function isValidEmail (email) {
     console.log(email)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -100,6 +82,21 @@ export default function SignUp ({ onSuccess }) {
     console.log(passwordWarning);
   }
 
+  // // add input to payload object
+  // setPayLoad({
+  //   ...payload,
+  //   email,
+  //   password,
+  //   name,
+  // })
+
+  // register function
+  async function register () {
+    console.log(email, password, name)
+    callAPI(method, path, { email, password, name })
+      .then((token) => { onSuccess(token) })
+      .catch((error) => setErrorMessage(error.message))
+  }
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
