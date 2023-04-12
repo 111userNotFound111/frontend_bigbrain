@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-
 import SignIn from './signIn'
 import SignUp from './signUp'
 import Dashboard from './dashboard'

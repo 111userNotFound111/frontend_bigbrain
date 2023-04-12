@@ -1,4 +1,6 @@
 import React from 'react';
+import NavBar from './component/navBar.jsx'; // 重命名组件
+
 function Dashboard ({ token }) {
   const [newQuizShow, setNewQuizShow] = React.useState(false)
   const [quizzes, setQuizzes] = React.useState([])
@@ -27,7 +29,7 @@ function Dashboard ({ token }) {
 
   async function fetchAllQuizzes () {
     console.log('the current token passed in is :', token)
-    const response = await fetch('http://localhost:5005{/admin/quiz}', {
+    const response = await fetch('http://localhost:5005/admin/quiz', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -43,8 +45,9 @@ function Dashboard ({ token }) {
     await fetchAllQuizzes();
   }, [newQuizShow])
 
-  return <>
-    DASHBOARD! Here is the list of games... <br />
+  return (
+    <>
+    <NavBar />
     {quizzes.map(quiz => (
       <>
       <b>{quiz.name}</b> <br />
@@ -62,7 +65,7 @@ function Dashboard ({ token }) {
         <button onClick={createNewQuiz}> Create New Quiz </button>
         </>
     )}
-  </>
+  </>)
 }
 
 export default Dashboard;
