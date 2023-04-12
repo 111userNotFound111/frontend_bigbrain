@@ -1,17 +1,19 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 function Copyright (props) {
   return (
@@ -26,7 +28,12 @@ function Copyright (props) {
 
 const theme = createTheme();
 
-export default function SignIn () {
+// Wrapper -> SignIn
+export default function SignIn ({ onSuccess }) {
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [errorMessage, setErrorMessage] = React.useState('');
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -36,10 +43,37 @@ export default function SignIn () {
     });
   };
 
+  console.log('sign in function starts')
+  async function login () {
+    console.log(email, password)
+    const response = await fetch('http://localhost:5005/admin/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      })
+    });
+    const data = await response.json();
+    if (data.error) {
+      console.log(data.error)
+      setErrorMessage(data.error);
+    } else {
+      onSuccess(data.token);
+      console.log(data)
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        <br />
+        <Stack>
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        </Stack>
         <Box
           sx={{
             marginTop: 8,
@@ -64,6 +98,7 @@ export default function SignIn () {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(email) => setEmail(email.target.value)}
             />
             <TextField
               margin="normal"
@@ -74,6 +109,7 @@ export default function SignIn () {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(password) => setPassword(password.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -83,18 +119,14 @@ export default function SignIn () {
               type="submit"
               fullWidth
               variant="contained"
+              onClick={login}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
