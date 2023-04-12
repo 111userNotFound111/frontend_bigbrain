@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -26,7 +24,13 @@ function Copyright (props) {
 
 const theme = createTheme();
 
-export default function SignUp () {
+export default function SignUp ({ onSuccess }) {
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [name, setName] = React.useState('')
+  const [emailWarning, setEmailWarning] = React.useState()
+  const [passwordWarning, setPasswordWarning] = React.useState()
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -35,6 +39,57 @@ export default function SignUp () {
       password: data.get('password'),
     });
   };
+
+  async function register () {
+    console.log(email, password, name)
+    const response = await fetch('http://localhost:5005/admin/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+      })
+    });
+    const data = await response.json();
+    onSuccess(data.token);
+    console.log(data)
+  }
+
+  function isValidEmail (email) {
+    console.log(email)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(email)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  // set email value, check validity and show warning
+  function emailChange (emailInput) {
+    const email = emailInput.target.value
+    setEmail(email);
+    if (isValidEmail(email)) {
+      setEmailWarning(false);
+    } else {
+      setEmailWarning(true);
+    }
+  }
+
+  // set password, check validity and show warning
+  function passwordChange (passwordInput) {
+    const password = passwordInput.target.value
+    setPassword(password);
+    if (password.includes(' ') === true) {
+      setPasswordWarning(true);
+    } else {
+      setPasswordWarning(false);
+    }
+    console.log(passwordWarning);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -56,25 +111,17 @@ export default function SignUp () {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Name"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  value={name}
+                  onChange={(name) => setName(name.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -85,7 +132,10 @@ export default function SignUp () {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(email) => emailChange(email)}
                 />
+                {emailWarning && <p style={{ color: 'red' }}>Please enter a valid email address</p>}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -96,13 +146,10 @@ export default function SignUp () {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={(password) => passwordChange(password)}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
+                {passwordWarning && <p style={{ color: 'red' }}>Please enter a valid password with no space</p>}
               </Grid>
             </Grid>
             <Button
@@ -110,6 +157,7 @@ export default function SignUp () {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={register}
             >
               Sign Up
             </Button>
