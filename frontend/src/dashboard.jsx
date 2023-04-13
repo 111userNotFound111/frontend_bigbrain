@@ -1,13 +1,13 @@
 import React from 'react';
 import NavBar from './component/navBar.jsx'; // 重命名组件
-import createGame from './component/createGame.jsx';
+// import createGame from './component/createQuiz.jsx';
 
 function Dashboard ({ token }) {
   const [quizzes, setQuizzes] = React.useState([])
   const [newQuizName, setNewQuizName] = React.useState('')
   async function Game (aa) {
     console.log('test', aa);
-    await createGame(aa)
+    // await createGame(aa)
     fetchAllQuizzes();
   }
 
@@ -36,7 +36,7 @@ function Dashboard ({ token }) {
     <br />
         From here for new Quiz! <br />
         Name: <input value={newQuizName} onChange={(name) => { setNewQuizName(name.target.value) }} type="text" /> <br />
-        <button onClick={() => Game(newQuizName)}> Create New Quiz </button>
+      <button onClick={() => Game(newQuizName) }> Create New Quiz </button>
   </>)
 }
 
