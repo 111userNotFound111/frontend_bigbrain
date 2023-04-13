@@ -1,6 +1,42 @@
 import React from 'react';
 import NavBar from './component/navBar.jsx'; // 重命名组件
 // import createGame from './component/createQuiz.jsx';
+import EditQuizModal from './component/editQuiz.jsx';
+import ShowQuizInCard from './component/showQuiz.jsx';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Unstable_Grid2';
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
+
+function BasicGrid () {
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        <Grid xs={8}>
+          <Item>xs=8</Item>
+        </Grid>
+        <Grid xs={4}>
+          <Item>xs=4</Item>
+        </Grid>
+        <Grid xs={4}>
+          <Item>xs=4</Item>
+        </Grid>
+        <Grid xs={8}>
+          <Item>< ShowQuizInCard inputQuizId='113967492' /></Item>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+// previous is test code
 
 function Dashboard ({ token }) {
   const [quizzes, setQuizzes] = React.useState([])
@@ -27,10 +63,12 @@ function Dashboard ({ token }) {
 
   return (
     <>
-    <NavBar />
+      <NavBar />
+      <EditQuizModal />
+      <BasicGrid />
     {quizzes.map(quiz => (
       <>
-      <b>{quiz.name}</b> <br />
+        <b>{quiz.name}{quiz.id}</b> <br />
       </>
     ))}
     <br />

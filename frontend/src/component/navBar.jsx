@@ -49,9 +49,8 @@ function CreateModal () {
             create a quiz
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            name:
+            name:<Input value={newQuizName} onChange={(name) => { if (name.target) setNewQuizName(name.target.value) }} type="text" />
           </Typography>
-          <Input value={newQuizName} onChange={(name) => { if (name.target) setNewQuizName(name.target.value) }} type="text" />
           <Button variant="contained" onClick={() => { createQuiz(newQuizName); handleClose(); window.location.href = '/dashboard'; }} disabled={confirmIsDisabled} sx={{ m: 2 } } >Confirm</Button>
           <Button variant="outlined" onClick={handleClose}>close</Button>
         </Box>
