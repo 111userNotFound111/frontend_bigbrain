@@ -12,9 +12,9 @@ function Wrapper () {
   const location = useLocation();
 
   // if sign in or sign up success, store token to localStorage and navigate to dashboard
-  function storeToken (token) {
+  function storeToken (tokenInput) {
+    const token = tokenInput.token
     console.log('token is:', token)
-
     setToken(token);
     localStorage.setItem('token', token);
     navigate('/dashboard');
