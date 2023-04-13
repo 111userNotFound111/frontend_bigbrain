@@ -1,27 +1,18 @@
 import React from 'react';
 import NavBar from './component/navBar.jsx'; // 重命名组件
-import CallAPI from './callAPI.jsx';
+import createGame from './component/createGame.jsx';
 
 function Dashboard ({ token }) {
-  const [newQuizShow, setNewQuizShow] = React.useState(false)
   const [quizzes, setQuizzes] = React.useState([])
   const [newQuizName, setNewQuizName] = React.useState('')
-
-  async function createNewQuiz () {
-    CallAPI('POST', 'admin/quiz/new', localStorage.getItem('token'), {
-      name: newQuizName,
-    }).then((data) => {
-      if (data.error) {
-        console.log('error', data.error)
-      } else {
-        console.log('data value', data.value)
-      }
-    })
-    await fetchAllQuizzes();
+  async function Game (aa) {
+    console.log('test', aa);
+    await createGame(aa)
+    fetchAllQuizzes();
   }
 
   async function fetchAllQuizzes () {
-    // console.log('the current token passed in is :', token)
+    console.log('the current token passed in is :', token)
     const response = await fetch('http://localhost:5005/admin/quiz', {
       method: 'GET',
       headers: {
@@ -34,10 +25,6 @@ function Dashboard ({ token }) {
     // console.log(quizzes)
   }
 
-  // React.useEffect(async () => {
-  //   await fetchAllQuizzes();
-  // }, [newQuizShow])
-
   return (
     <>
     <NavBar />
@@ -47,17 +34,9 @@ function Dashboard ({ token }) {
       </>
     ))}
     <br />
-    <button onClick={() => setNewQuizShow(!newQuizShow)}>
-        {newQuizShow ? 'Hide' : 'Show'} Create New Quiz
-    </button>
-    {newQuizShow && (
-        <>
-        <br />
         From here for new Quiz! <br />
         Name: <input value={newQuizName} onChange={(name) => { setNewQuizName(name.target.value) }} type="text" /> <br />
-        <button onClick={createNewQuiz}> Create New Quiz </button>
-        </>
-    )}
+        <button onClick={() => Game(newQuizName)}> Create New Quiz </button>
   </>)
 }
 
