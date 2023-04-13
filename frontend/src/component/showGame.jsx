@@ -1,4 +1,5 @@
 // import React from 'react';
+<<<<<<< HEAD
 
 // const [quizzes, setQuizzes] = React.useState([])
 
@@ -21,3 +22,5 @@
 //   <b>{quiz.name}</b> <br />
 //   </>
 // ))}
+=======
+>>>>>>> origin/master

@@ -12,9 +12,9 @@ function Wrapper () {
   const location = useLocation();
 
   // if sign in or sign up success, store token to localStorage and navigate to dashboard
-  function storeToken (token) {
+  function storeToken (tokenInput) {
+    const token = tokenInput.token
     console.log('token is:', token)
-
     setToken(token);
     localStorage.setItem('token', token);
     navigate('/dashboard');
@@ -24,11 +24,11 @@ function Wrapper () {
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       setToken(localStorage.getItem('token'))
-      if (['/signup', '/signin'].includes(location.pathname)) {
+      if (['/signup', '/signin', '/'].includes(location.pathname)) {
         navigate('/dashboard');
       }
     } else { // if not login (no token), navigate to signin
-      if (!['/signup', '/signin'].includes(location.pathname)) {
+      if (!['/signup', '/signin', '/'].includes(location.pathname)) {
         navigate('/signin');
       }
     }
