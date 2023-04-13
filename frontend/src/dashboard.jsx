@@ -2,10 +2,9 @@ import * as React from 'react';
 
 import NavBar from './component/navBar.jsx'; // 重命名组件
 // import createGame from './component/createQuiz.jsx';
-import EditQuizModal from './component/editQuiz.jsx';
 import ShowQuizInCard from './component/showQuiz.jsx';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 // import { useEffect } from 'react';
@@ -18,23 +17,23 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function BasicGrid () {
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        <Grid xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid xs={4}>
-          <Item>< ShowQuizInCard inputQuizId='113967492' /></Item>
-        </Grid>
-      </Grid>
-    </Box>
-  );
-}
+// function BasicGrid () {
+//   return (
+//     <Box sx={{ flexGrow: 1 }}>
+//       <Grid container spacing={2}>
+//         <Grid xs={4}>
+//           <Item>xs=4</Item>
+//         </Grid>
+//         <Grid xs={4}>
+//           <Item>xs=4</Item>
+//         </Grid>
+//         <Grid xs={4}>
+//           <Item>< ShowQuizInCard inputQuizId='113967492' /></Item>
+//         </Grid>
+//       </Grid>
+//     </Box>
+//   );
+// }
 // previous is test code
 
 function Dashboard ({ token }) {
@@ -63,8 +62,7 @@ function Dashboard ({ token }) {
   return (
     <>
       <NavBar />
-      <EditQuizModal />
-      <BasicGrid />
+      {/* <BasicGrid /> */}
     {quizzes.map(quiz => (
       <>
         <Grid xs={4}>

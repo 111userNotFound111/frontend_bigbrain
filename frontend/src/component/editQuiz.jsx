@@ -33,7 +33,7 @@ const style = {
   p: 4,
 };
 
-function editQuizModal () {
+function editQuizModal (quizId) {
   // file
   const [selectedFile, setSelectedFile] = useState(null);
   const handleFileInput = (event) => {
@@ -44,14 +44,14 @@ function editQuizModal () {
   };
 
   // modal
-  const [editQuizId, setEditQuizId] = React.useState('');
+  const [editQuizId] = React.useState(quizId.inputQuizId);
   const [editQuizName, setEditQuizName] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <div>
-      <Button color="inherit" onClick={handleOpen}>Open modal</Button>
+      <Button variant="contained" onClick={handleOpen}>edit Quiz</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -64,8 +64,8 @@ function editQuizModal () {
           </Typography>
 
           {/* id */}
-          <TextField id="standard-basic" label="quiz id" variant="standard" value={editQuizId}
-            onChange={(id) => { if (id.target) setEditQuizId(id.target.value) }} type="text" />
+          {/* <TextField id="standard-basic" label="quiz id" variant="standard" value={editQuizId}
+            onChange={(id) => { if (id.target) setEditQuizId(id.target.value) }} type="text" /> */}
 
           {/* name */}
           <TextField id="standard-basic" label="Name" variant="standard" value={editQuizName}
