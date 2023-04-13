@@ -93,7 +93,7 @@ export default function SignUp ({ onSuccess }) {
   // register function
   async function register () {
     console.log(email, password, name)
-    callAPI(method, path, { email, password, name })
+    callAPI(method, path, '', { email, password, name })
       .then((token) => { onSuccess(token) })
       .catch((error) => setErrorMessage(error.message))
   }

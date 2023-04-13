@@ -46,7 +46,7 @@ export default function SignIn ({ onSuccess }) {
 
   async function login () {
     console.log(email, password,)
-    callAPI(method, path, { email, password, })
+    callAPI(method, path, '', { email, password, })
       .then((token) => { onSuccess(token) })
       .catch((error) => setErrorMessage(error.message))
   }

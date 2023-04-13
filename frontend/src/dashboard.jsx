@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from './component/navBar.jsx'; // 重命名组件
+import CallAPI from './callAPI.jsx';
 
 function Dashboard ({ token }) {
   const [newQuizShow, setNewQuizShow] = React.useState(false)
@@ -7,28 +8,20 @@ function Dashboard ({ token }) {
   const [newQuizName, setNewQuizName] = React.useState('')
 
   async function createNewQuiz () {
-    console.log('create new game with name:', newQuizName)
-    const response = await fetch('http://localhost:5005/admin/quiz/new', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: newQuizName,
-      })
-    });
-    const data = await response.json();
-    if (data.error) {
-      console.log(data.error)
-    } else {
-      console.log(data.value)
-    }
+    CallAPI('POST', 'admin/quiz/new', localStorage.getItem('token'), {
+      name: newQuizName,
+    }).then((data) => {
+      if (data.error) {
+        console.log('error', data.error)
+      } else {
+        console.log('data value', data.value)
+      }
+    })
     await fetchAllQuizzes();
   }
 
   async function fetchAllQuizzes () {
-    console.log('the current token passed in is :', token)
+    // console.log('the current token passed in is :', token)
     const response = await fetch('http://localhost:5005/admin/quiz', {
       method: 'GET',
       headers: {
@@ -38,7 +31,7 @@ function Dashboard ({ token }) {
     });
     const data = await response.json();
     setQuizzes(data.quizzes)
-    console.log(quizzes)
+    // console.log(quizzes)
   }
 
   // React.useEffect(async () => {
