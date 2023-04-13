@@ -10,29 +10,36 @@ import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useState } from 'react';
 import CallAPI from '../callAPI.jsx';
+
+function deleteQuiz (quizId) {
+  CallAPI('DELETE', `admin/quiz/${quizId}`, localStorage.getItem('token'), '');
+  window.location.href = '/dashboard';
+}
+
 export default function showQuizInCard (inputQuizId) {
   const [quizId] = useState(inputQuizId.inputQuizId);
   const [quizName, setQuizName] = useState('');
   CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
-    console.log(data);
     setQuizName(data.name);
-  }).catch((err) => {
-    console.log(err);
+  }).catch(() => {
+    console.log('error in showQuizInCard');
   });
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined">
       <CardHeader
         action={
-          <IconButton aria-label="settings">
-            <ClearIcon />
+          <IconButton aria-label="settings" onClick = {() => deleteQuiz(inputQuizId.inputQuizId) } >
+              <ClearIcon />
           </IconButton>
         }
-        title={quizName}
-      />
+        />
         <CardContent>
         <Typography variant="h5" component="div">
-          quiz id: {quizId}
+          name: {quizName}
+        </Typography>
+        <Typography variant="body2" component="div" color="text.secondary">
+          id: {quizId}
         </Typography>
       <br />
       <Typography variant="body2">

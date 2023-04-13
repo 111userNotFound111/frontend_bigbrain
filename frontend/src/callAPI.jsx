@@ -1,7 +1,7 @@
 // import * as React from 'react';
 /* method, path, token, payload**/
 export default async function callAPI (method, path, token, payload) {
-  console.log('API call starts with:', method, path, payload);
+  // console.log('API call starts with:', method, path, payload);
   const options = {
     method,
     headers: {
@@ -9,7 +9,7 @@ export default async function callAPI (method, path, token, payload) {
       Authorization: `Bearer ${token}`,
     },
   };
-  if (method !== 'GET') {
+  if (method !== 'GET' && method !== 'DELETE') {
     options.body = JSON.stringify(payload);
   }
   const response = await fetch(`http://localhost:5005/${path}`, options);
