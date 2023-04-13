@@ -28,7 +28,7 @@ function Wrapper () {
         navigate('/dashboard');
       }
     } else { // if not login (no token), navigate to signin
-      if (!['/signup', '/signin', '/'].includes(location.pathname)) {
+      if (!['/signup', '/signin'].includes(location.pathname)) {
         navigate('/signin');
       }
     }
