@@ -1,13 +1,12 @@
 // import CallAPI from '../callAPI.jsx';
 import * as React from 'react';
-import { useState } from 'react';
+// import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Input from '@mui/material/Input';
 import CallAPI from '../callAPI.jsx';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 // this is edit quiz profile function
@@ -18,7 +17,7 @@ async function inputQuizDetail (quizId, inputQuestion, inputName, inputThumbnail
     name: inputName,
     thumbnail: inputThumbnail,
   })
-  window.location.href = '/dashboard';
+  // window.location.href = '/dashboard';
 }
 
 const style = {
@@ -34,18 +33,13 @@ const style = {
 };
 
 function editQuizModal (quizId) {
-  // file
-  const [selectedFile, setSelectedFile] = useState(null);
-  const handleFileInput = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-  const handleUpload = () => {
-    console.log(selectedFile);
-  };
-
   // modal
   const [editQuizId] = React.useState(quizId.inputQuizId);
   const [editQuizName, setEditQuizName] = React.useState('');
+  const [editQuizThumbnail, setEditQuizThumbnail] = React.useState('');
+  const handleFileInput = (event) => {
+    setEditQuizThumbnail(URL.createObjectURL(event.target.files[0]));
+  };
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -73,22 +67,18 @@ function editQuizModal (quizId) {
 
           {/* image */}
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            quiz thumbnail: <Stack spacing={2}>
-      <Input variant="outlined" size="small" type="file" onChange={handleFileInput} />
-          <Button onClick={handleUpload} disabled={!selectedFile}>
-            上传
-          </Button>
-          </Stack>
+          <Input variant="outlined" size="small" type="file" onChange={handleFileInput} />
           </Typography>
 
-          <hr style={{ margin: '20px 0' }} />
+          {/* Button */}
+          <p style={{ margin: '20px 0' }} />
           <Button variant="contained" onClick={() => {
             console.log('editQuizId', editQuizId);
             inputQuizDetail(editQuizId, '',
-              editQuizName, '');
+              editQuizName, editQuizThumbnail);
             handleClose();
           }} sx={{ m: 2 }} >Confirm</Button>
-          <Button variant="outlined" onClick={handleClose}>close</Button>
+          <Button variant="outlined" onClick={() => { handleClose() }}>close</Button>
         </Box>
       </Modal>
     </div>

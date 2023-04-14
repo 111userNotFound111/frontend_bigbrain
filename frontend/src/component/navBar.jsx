@@ -37,7 +37,7 @@ function CreateModal () {
   }, [newQuizName]);
   return (
     <div>
-      <Button color="inherit" onClick={handleOpen}>Open modal</Button>
+      <Button color="inherit" onClick={handleOpen}>New Quiz</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -71,8 +71,7 @@ export default function ButtonAppBar () {
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           </Typography>
-          <CreateModal /> {/* 在这里使用组件 */}
-          <Button color="inherit">Login</Button>
+          <CreateModal />
           <Button color="inherit" onClick={Logout}>Logout</Button>
         </Toolbar>
       </AppBar>

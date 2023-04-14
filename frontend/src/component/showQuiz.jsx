@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useState } from 'react';
 import CallAPI from '../callAPI.jsx';
+import CardMedia from '@mui/material/CardMedia';
 
 function deleteQuiz (quizId) {
   CallAPI('DELETE', `admin/quiz/${quizId}`, localStorage.getItem('token'), '');
@@ -19,8 +20,14 @@ function deleteQuiz (quizId) {
 export default function showQuizInCard (inputQuizId) {
   const [quizId] = useState(inputQuizId.inputQuizId);
   const [quizName, setQuizName] = useState('');
+  const [quizThumbnail, setQuizThumbnail] = useState('');
   CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
     setQuizName(data.name);
+    if (data.thumbnail === undefined) {
+      setQuizThumbnail(data.thumbnail);
+    } else {
+      setQuizThumbnail('https://i.imgur.com/3oqzZ8K.png');
+    }
   }).catch(() => {
     console.log('error in showQuizInCard');
   });
@@ -41,7 +48,13 @@ export default function showQuizInCard (inputQuizId) {
         <Typography variant="body2" component="div" color="text.secondary">
           id: {quizId}
         </Typography>
-      <br />
+        <CardMedia
+        component="img"
+        height="120"
+        width="120"
+        image={quizThumbnail}
+        alt="quiz thumbnail"
+      />
       <Typography variant="body2">
         time required: xxx
         <br />
