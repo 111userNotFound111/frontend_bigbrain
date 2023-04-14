@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
+import callAPI from './callAPI.jsx';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,28 +24,24 @@ const Item = styled(Paper)(({ theme }) => ({
 function Dashboard ({ token }) {
   const [quizzes, setQuizzes] = React.useState([])
   const [newQuizName, setNewQuizName] = React.useState('')
+
   async function Game (aa) {
-    console.log('test', aa);
+    console.log('Game function start here', aa);
     // await createGame(aa)
+    console.log('')
     fetchAllQuizzes();
   }
   useEffect(() => {
     fetchAllQuizzes();
+    console.log('fetch start here')
   }, []);
 
   async function fetchAllQuizzes () {
     console.log('the current token passed in is :', token)
-    const response = await fetch('http://localhost:5005/admin/quiz', {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    setQuizzes(data.quizzes)
-    // console.log(quizzes)
+    callAPI('GET', 'admin/quiz', token, {})
+      .then((data) => { setQuizzes(data.quizzes) })
   }
+  console.log('quizzes are :', quizzes)
 
   return (
     <>
