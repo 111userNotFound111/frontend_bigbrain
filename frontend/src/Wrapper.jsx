@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import SignIn from './signIn'
-import SignUp from './signUp'
-import Dashboard from './dashboard'
-import EditGame from './editGame'
+import SignIn from './pages/signIn'
+import SignUp from './pages/signUp'
+import Dashboard from './pages/dashboard'
+import EditGame from './pages/editGame'
 
 // the Wrapper function is located inside the App router
 // App -> Wrapper

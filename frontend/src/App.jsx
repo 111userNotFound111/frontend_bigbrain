@@ -5,11 +5,11 @@ import Wrapper from './Wrapper.jsx'
 function App () {
   return (
     // the router component
-    <>
+    <React.StrictMode>
     <Router>
         <Wrapper />
     </Router>
-    </>
+    </React.StrictMode>
   );
 }
 

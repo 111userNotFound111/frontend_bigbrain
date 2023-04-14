@@ -22,7 +22,7 @@ const style = {
   p: 4,
 };
 
-export default function ButtonAppBar () {
+export default function DashboardNavBar () {
   const navigate = useNavigate();
 
   function CreateModal () {
@@ -42,12 +42,12 @@ export default function ButtonAppBar () {
     return (
       <div>
         <Button color="inherit" onClick={handleOpen}>New Quiz</Button>
+
         <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
+          aria-describedby="modal-modal-description">
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               create a quiz
@@ -74,7 +74,7 @@ export default function ButtonAppBar () {
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           </Typography>
-          <CreateModal />
+          <div><CreateModal /></div>
           <Button color="inherit" onClick={Logout}>Logout</Button>
         </Toolbar>
       </AppBar>
