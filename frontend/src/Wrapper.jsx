@@ -8,6 +8,7 @@ import Dashboard from './dashboard'
 // App -> Wrapper
 function Wrapper () {
   const [token, setToken] = React.useState(null);
+  const [dashload, setDashload] = React.useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,7 +33,17 @@ function Wrapper () {
         navigate('/signin');
       }
     }
+    setDashload(false)
   }, [])
+
+  console.log(token)
+
+  if (dashload) {
+    return (
+      <>Loading Page</>
+    )
+  }
+
   return (
     // the router component
     <>
