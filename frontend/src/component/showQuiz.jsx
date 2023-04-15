@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CallAPI from '../callAPI.jsx';
 import CardMedia from '@mui/material/CardMedia';
 
@@ -21,16 +21,19 @@ export default function showQuizInCard (inputQuizId) {
   const [quizId] = useState(inputQuizId.inputQuizId);
   const [quizName, setQuizName] = useState('');
   const [quizThumbnail, setQuizThumbnail] = useState('');
-  CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
-    setQuizName(data.name);
-    if (data.thumbnail === undefined) {
-      setQuizThumbnail(data.thumbnail);
-    } else {
-      setQuizThumbnail('https://i.imgur.com/3oqzZ8K.png');
-    }
-  }).catch(() => {
-    console.log('error in showQuizInCard');
-  });
+  useEffect(() => {
+    CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
+      setQuizName(data.name);
+      if (data.thumbnail === undefined) {
+        setQuizThumbnail(data.thumbnail);
+      } else {
+        setQuizThumbnail('https://i.imgur.com/3oqzZ8K.png');
+      }
+    }).catch(() => {
+      console.log('error in showQuizInCard');
+    });
+  }, [])
+
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined">

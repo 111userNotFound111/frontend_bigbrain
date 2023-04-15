@@ -1,8 +1,9 @@
 import React from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import SignIn from './signIn'
-import SignUp from './signUp'
-import Dashboard from './dashboard'
+import SignIn from './pages/signIn'
+import SignUp from './pages/signUp'
+import Dashboard from './pages/dashboard'
+import EditGame from './pages/editGame'
 
 // the Wrapper function is located inside the App router
 // App -> Wrapper
@@ -46,12 +47,13 @@ function Wrapper () {
 
   return (
     // the router component
+    // add function with the initial letter been capital
     <>
-
     <Routes>
         <Route path="/signup" element={<SignUp onSuccess={storeToken} />} />
         <Route path="/signin" element={<SignIn onSuccess={storeToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token}/>} />
+        <Route path="/editGame/:gameId" element={<EditGame />} />
     </Routes>
     </>
   );
