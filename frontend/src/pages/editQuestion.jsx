@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Checkbox, Button } from '@mui/material';
 import CustomTextField from '../component/customTextField';
-import CustomNavBar from '../component/customNavBar'
+import NavBar from '../component/navBar'
 
 export default function editQuestion ({ setUpdatedQuestion }) {
   console.log('edit question function starts')
@@ -70,7 +70,7 @@ export default function editQuestion ({ setUpdatedQuestion }) {
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ marginBottom: '50px' }}>
-      <CustomNavBar /> <br />
+      <NavBar /> <br />
       <h1>Edit Question: {title} Quiz Id {quizId}</h1>
       <div>Question Index: {questionIndex} </div> <br /> <br />
 

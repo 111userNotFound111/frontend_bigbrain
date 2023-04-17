@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import EditQuizModal from './editQuizModal.jsx';
 import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
@@ -13,6 +12,7 @@ import { useState, useEffect } from 'react';
 import CallAPI from '../callAPI.jsx';
 import CardMedia from '@mui/material/CardMedia';
 import StartQuiz from './startQuizModal.jsx';
+import { Button, Grid } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 function deleteQuiz (quizId) {
   CallAPI('DELETE', `admin/quiz/${quizId}`, localStorage.getItem('token'), '');
@@ -74,7 +74,7 @@ export default function showQuizInCard (inputQuizId) {
         <CardActions>
           <Grid container spacing={2} justifyContent="center" alignItems="center">
             <Grid item>
-              <EditQuizModal inputQuizId={inputQuizId.inputQuizId} />
+            <Button variant="contained" onClick={handleEditQuiz} id={quizId}>edit Quiz</Button>
           </Grid>
             <Grid item>
             <StartQuiz inputQuizId={inputQuizId.inputQuizId} />
