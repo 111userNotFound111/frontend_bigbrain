@@ -76,7 +76,7 @@ export default function DashboardNavBar () {
   console.log('location', location);
   function Logout () {
     localStorage.clear();
-    navigate('/signin');
+    navigate('/');
   }
 
   if (location.pathname === '/dashboard') {
