@@ -1,5 +1,6 @@
 // input quiz id, output a card with with the basic info
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,7 +14,6 @@ import CallAPI from '../callAPI.jsx';
 import CardMedia from '@mui/material/CardMedia';
 import StartQuiz from './startQuizModal.jsx';
 import CardActions from '@mui/material/CardActions';
-import { Grid } from '@mui/material';
 function deleteQuiz (quizId) {
   CallAPI('DELETE', `admin/quiz/${quizId}`, localStorage.getItem('token'), '');
   window.location.href = '/dashboard';
@@ -23,6 +23,7 @@ export default function showQuizInCard (inputQuizId) {
   const [quizId] = useState(inputQuizId.inputQuizId);
   const [quizName, setQuizName] = useState('');
   const [quizThumbnail, setQuizThumbnail] = useState('');
+  const navigate = useNavigate();
   useEffect(() => {
     CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
       setQuizName(data.name);
@@ -36,6 +37,9 @@ export default function showQuizInCard (inputQuizId) {
     });
   }, [])
 
+  function handleEditQuiz () {
+    navigate(`/editGame/${quizId}`);
+  }
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined">
