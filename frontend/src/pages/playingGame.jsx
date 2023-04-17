@@ -15,6 +15,7 @@ function playingGame () {
   const [open, setOpen] = React.useState(true);
   const [result, setResult] = React.useState(null);
   const [stage, setStage] = React.useState('');
+  const [msg, setMsg] = React.useState('Click next question to start the question');
   const handleSuccess = () => {
     setResult(0);
   };
@@ -22,22 +23,16 @@ function playingGame () {
   // const handleError = () => {
   // setResult(0);
   // };
-  const handleStartButtonClick = () => {
-    callAPI('POST', `admin/quiz/${quizId}/start`, localStorage.getItem('token'), '').then((data) => {
-      setStage(data.stage);
-      console.log('stage', data.stage);
-    });
-    handleSuccess();
-    console.log('already started', stage);
-  };
 
   const handleNextButtonClick = () => {
     callAPI('POST', `admin/quiz/${quizId}/advance`, localStorage.getItem('token'), '').then((data) => {
       setStage(data.stage);
       console.log('stage', data.stage);
+      if (data.stage != null) {
+        setMsg(`Question number: ${data.stage + 1}`);
+      }
     });
     handleSuccess();
-    console.log('already started', stage);
   };
 
   const handleEndButtonClick = () => {
@@ -70,18 +65,21 @@ function playingGame () {
   return (
     <>
       <NavBar />
-      <h1>Current Stage:{stage}</h1>
-      <Button variant="contained" onClick={handleStartButtonClick}>Start</Button>
-      <Button variant="contained" onClick={handleNextButtonClick}>Next question</Button>
-      {result === 0 && <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="already started"
-        action={action}
-      />}
-      <Button variant="contained" onClick={handleEndButtonClick}>End</Button>
-    <br />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h1>{ msg }</h1>
+          <Button variant="contained" onClick={handleNextButtonClick}>Next question</Button>
+          {result === 0 && <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            message="already started"
+            action={action}
+          />}
+          <br />
+          <Button variant="contained" onClick={handleEndButtonClick}>End</Button>
+        </div>
+      </div>
     </>
   )
 }
