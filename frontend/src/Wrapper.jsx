@@ -9,7 +9,7 @@ import Kahoot from './pages/players/kahootJoin'
 import KahootProcess from './pages/players/kahootProcess'
 import Test from './pages/test'
 import EditQuestion from './pages/editQuestion'
-import Begin from './pages/begin';
+import Home from './pages/home';
 
 // the Wrapper function is located inside the App router
 // App -> Wrapper
@@ -57,7 +57,7 @@ function Wrapper () {
     // add function with the initial letter been capital
     <>
       <Routes>
-        <Route path="/" element={<Begin />} />
+        <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp onSuccess={storeToken} />} />
         <Route path="/signin" element={<SignIn onSuccess={storeToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token}/>} />

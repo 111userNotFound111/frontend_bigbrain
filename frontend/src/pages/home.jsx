@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 // this is player join part
 
-function index () {
+function home () {
   const navigate = useNavigate();
   function onClickAdmin () {
     if (localStorage.getItem('token') === null) {
@@ -29,4 +29,4 @@ function index () {
   )
 }
 
-export default index;
+export default home;
