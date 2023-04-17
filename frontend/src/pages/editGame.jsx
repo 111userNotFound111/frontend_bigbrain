@@ -19,19 +19,20 @@ export default function editGame ({ token, updatedQuestion }) {
   const [questions, setQuestions] = useState([])
 
   // Second store game info into variables every time quizInfo changes
-  useEffect(() => {
-    async function fetchQuizData () {
-      const quizData = await callAPI('GET', `admin/quiz/${quizId}`, token, {});
-      console.log('fet quiz data begins')
-      setQuizInfo(quizData);
-      setNewQuizName(quizData.name);
-      setThumbnail(quizData.thumbnail);
-      setQuestions(quizData.questions);
-      console.log('updated questions', updatedQuestion)
-      if (updatedQuestion) {
-        setQuestions(updatedQuestion)
-      }
+  async function fetchQuizData () {
+    const quizData = await callAPI('GET', `admin/quiz/${quizId}`, token, {});
+    console.log('fet quiz data begins')
+    setQuizInfo(quizData);
+    setNewQuizName(quizData.name);
+    setThumbnail(quizData.thumbnail);
+    setQuestions(quizData.questions);
+    console.log('updated questions', updatedQuestion)
+    if (updatedQuestion) {
+      setQuestions(updatedQuestion)
     }
+  }
+
+  useEffect(() => {
     fetchQuizData();
   }, []);
 
@@ -62,6 +63,8 @@ export default function editGame ({ token, updatedQuestion }) {
       name: newQuizName,
       thumbnail: newThumbnail64
     })
+    console.log('edit quiz starts')
+    fetchQuizData();
   }
   // convert base64 back to image
   function Base64ToImage (base64) {
