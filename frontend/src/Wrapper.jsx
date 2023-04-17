@@ -4,7 +4,10 @@ import SignIn from './pages/signIn'
 import SignUp from './pages/signUp'
 import Dashboard from './pages/dashboard'
 import EditGame from './pages/editGame'
-
+import PlayingGame from './pages/playingGame'
+import Kahoot from './pages/players/kahootJoin'
+import KahootProcess from './pages/players/kahootProcess'
+import Test from './pages/test'
 // the Wrapper function is located inside the App router
 // App -> Wrapper
 function Wrapper () {
@@ -54,6 +57,10 @@ function Wrapper () {
         <Route path="/signin" element={<SignIn onSuccess={storeToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token}/>} />
         <Route path="/editGame/:gameId" element={<EditGame />} />
+        <Route path="/playingGame/:quizId" element={<PlayingGame />} />
+        <Route path="/kahoot.it" element={<Kahoot />} />
+        <Route path="/kahootProcess" element={<KahootProcess />} />
+        <Route path="/test" element={<Test />} />
     </Routes>
     </>
   );

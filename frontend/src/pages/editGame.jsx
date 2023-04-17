@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, } from 'react-router-dom';
 import CustomTextField from '../component/customTextField.jsx'
-import CustomNavBar from '../component/customNavBar.jsx'
+import NavBar from '../component/navBar.jsx'
 import { Button, Modal, Box, } from '@mui/material';
 
 export default function editGame () {
@@ -60,7 +60,7 @@ export default function editGame () {
   console.log(image64)
   return (
     <>
-      <CustomNavBar/>
+      <NavBar/>
 
       <div>
         <h1>Edit Game </h1>
@@ -106,32 +106,32 @@ export default function editGame () {
             <CustomTextField id="points-allocated-input" label="Points Allocated" variant="outlined" fullWidth />
             <CustomTextField id="option1-input" label="Option 1" variant="outlined" fullWidth />
             <CustomTextField id="option2-input" label="Option 2" variant="outlined" fullWidth />
-<CustomTextField id="option3-input" label="Option 3" variant="outlined" fullWidth />
-<CustomTextField id="option4-input" label="Option 4" variant="outlined" fullWidth />
-<CustomTextField id="correct-answer-input" label="Correct Answer" variant="outlined" fullWidth />
-<Button variant="contained" onClick={handleAddQuestion}> Add </Button>
-</Box>
-</Modal>
-{questions.map((question, index) => {
-  return (
-<div key={index}>
-<h2>{question.name}</h2>
-<p>Time Allowed: {question.timeAllowed} seconds</p>
-<p>Points Allocated: {question.pointsAllocated}</p>
-<h3>Options:</h3>
-<ul>
-{question.options.map((option, index) => {
-  return (
-<li key={index}>{option}</li>
-  );
-})}
-</ul>
-<p>Correct Answer: {question.correctAnswer}</p>
-<hr />
-</div>
-  );
-})}
-</div>
-</>
+            <CustomTextField id="option3-input" label="Option 3" variant="outlined" fullWidth />
+            <CustomTextField id="option4-input" label="Option 4" variant="outlined" fullWidth />
+            <CustomTextField id="correct-answer-input" label="Correct Answer" variant="outlined" fullWidth />
+            <Button variant="contained" onClick={handleAddQuestion}> Add </Button>
+          </Box>
+        </Modal>
+      {questions.map((question, index) => {
+        return (
+          <div key={index}>
+            <h2>{question.name}</h2>
+            <p>Time Allowed: {question.timeAllowed} seconds</p>
+            <p>Points Allocated: {question.pointsAllocated}</p>
+            <h3>Options:</h3>
+            <ul>
+              {question.options.map((option, index) => {
+                return (
+                  <li key={index}>{option}</li>
+                );
+              })}
+            </ul>
+              <p>Correct Answer: {question.correctAnswer}</p>
+            <hr />
+          </div>
+        );
+      })}
+      </div>
+    </>
   );
 }

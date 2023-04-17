@@ -10,7 +10,7 @@ export default async function callAPI (method, path, token, payload) {
     },
     body: JSON.stringify(payload),
   };
-  if (method === 'GET' || method === 'DELETE') {
+  if (method === 'GET' || method === 'DELETE' || path.includes('start' || 'advance' || 'end')) {
     delete options.body;
   }
   // console.log('calling fetch')
