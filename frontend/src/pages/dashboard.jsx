@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import DashboardNavBar from '../component/dashboardNavBar.jsx'; // 重命名组件
+import NavBar from '../component/navBar.jsx';
 // import createGame from './component/createQuiz.jsx';
 import ShowQuizInCard from '../component/showQuiz.jsx';
 import { styled } from '@mui/material/styles';
@@ -45,7 +45,7 @@ function Dashboard ({ token }) {
 
   return (
     <>
-      <DashboardNavBar />
+      <NavBar />
       {/* <ResponsiveGrid /> */}
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

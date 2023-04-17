@@ -4,6 +4,10 @@ import SignIn from './pages/signIn'
 import SignUp from './pages/signUp'
 import Dashboard from './pages/dashboard'
 import EditGame from './pages/editGame'
+import PlayingGame from './pages/playingGame'
+import Kahoot from './pages/players/kahootJoin'
+import KahootProcess from './pages/players/kahootProcess'
+import Test from './pages/test'
 import EditQuestion from './pages/editQuestion'
 
 // the Wrapper function is located inside the App router
@@ -55,6 +59,10 @@ function Wrapper () {
         <Route path="/signup" element={<SignUp onSuccess={storeToken} />} />
         <Route path="/signin" element={<SignIn onSuccess={storeToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token}/>} />
+        <Route path="/playingGame/:quizId" element={<PlayingGame />} />
+        <Route path="/kahoot.it" element={<Kahoot />} />
+        <Route path="/kahootProcess" element={<KahootProcess />} />
+        <Route path="/test" element={<Test />} />
         <Route path="/editGame/:quizId" element={<EditGame token={token } updatedQuestion={updatedQuestion}/>} />
         <Route path="/editGame/:quizId/:questionIndex" element={<EditQuestion setUpdatedQuestion={setUpdatedQuestion}/>} />
     </Routes>

@@ -8,7 +8,7 @@ import { Delete, Edit, } from '@mui/icons-material';
 import callAPI from '../callAPI.jsx'
 import AddQuestionForm from '../component/addQuestionsForm.jsx'
 import CustomTextField from '../component/customTextField.jsx'
-import CustomNavBar from '../component/customNavBar.jsx'
+import NavBar from '../component/navBar.jsx'
 
 export default function editGame ({ token, updatedQuestion }) {
   const { quizId } = useParams();
@@ -90,7 +90,7 @@ export default function editGame ({ token, updatedQuestion }) {
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ marginBottom: '50px' }}>
-        <CustomNavBar />
+        <NavBar />
         <div>
           <h1>Edit Game : {quizInfo.name}</h1>
           <span>Game ID : {quizId}</span>

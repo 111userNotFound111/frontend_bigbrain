@@ -9,10 +9,11 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useState, useEffect } from 'react';
-import { Button } from '@mui/material';
 import CallAPI from '../callAPI.jsx';
 import CardMedia from '@mui/material/CardMedia';
-
+import StartQuiz from './startQuizModal.jsx';
+import { Button, Grid } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
 function deleteQuiz (quizId) {
   CallAPI('DELETE', `admin/quiz/${quizId}`, localStorage.getItem('token'), '');
   window.location.href = '/dashboard';
@@ -67,9 +68,19 @@ export default function showQuizInCard (inputQuizId) {
         time required: xxx
         <br />
       </Typography>
-      <br />
-        <Button variant="contained" onClick={handleEditQuiz} id={quizId}>edit Quiz</Button>
-    </CardContent>
+          <br />
+
+        </CardContent>
+        <CardActions>
+          <Grid container spacing={2} justifyContent="center" alignItems="center">
+            <Grid item>
+            <Button variant="contained" onClick={handleEditQuiz} id={quizId}>edit Quiz</Button>
+          </Grid>
+            <Grid item>
+            <StartQuiz inputQuizId={inputQuizId.inputQuizId} />
+      </Grid>
+    </Grid>
+        </CardActions>
       </Card>
     </Box>
   );
