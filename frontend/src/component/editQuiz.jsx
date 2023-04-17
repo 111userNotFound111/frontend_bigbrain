@@ -45,7 +45,7 @@ function editQuizModal (quizId) {
   const handleClose = () => setOpen(false);
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen} id={ editQuizId}>edit Quiz</Button>
+      <Button variant="contained" onClick={handleOpen} id={ editQuizId }>edit Quiz</Button>
       <Modal
         open={open}
         onClose={handleClose}
