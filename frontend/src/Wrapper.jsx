@@ -9,6 +9,7 @@ import Kahoot from './pages/players/kahootJoin'
 import KahootProcess from './pages/players/kahootProcess'
 import Test from './pages/test'
 import EditQuestion from './pages/editQuestion'
+import Begin from './pages/begin';
 
 // the Wrapper function is located inside the App router
 // App -> Wrapper
@@ -32,13 +33,13 @@ function Wrapper () {
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       setToken(localStorage.getItem('token'))
-      if (['/signup', '/signin', '/'].includes(location.pathname)) {
+      if (['/signup', '/signin'].includes(location.pathname)) {
         navigate('/dashboard');
       }
-    } else { // if not login (no token), navigate to signin
-      if (!['/signup', '/signin'].includes(location.pathname)) {
-        navigate('/signin');
-      }
+    } else if (['/', '/kahoot.it'].includes(location.pathname)) {
+      console.log('player');
+    } else if (!['/signup', '/signin'].includes(location.pathname)) { // if not login (no token), navigate to signin
+      navigate('/signin');
     }
     setDashload(false)
   }, [])
@@ -55,16 +56,18 @@ function Wrapper () {
     // the router component
     // add function with the initial letter been capital
     <>
-    <Routes>
+      <Routes>
+        <Route path="/" element={<Begin />} />
         <Route path="/signup" element={<SignUp onSuccess={storeToken} />} />
         <Route path="/signin" element={<SignIn onSuccess={storeToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token}/>} />
-        <Route path="/playingGame/:quizId" element={<PlayingGame />} />
-        <Route path="/kahoot.it" element={<Kahoot />} />
-        <Route path="/kahootProcess" element={<KahootProcess />} />
+        <Route path="/playingGame/quizid/:quizId/sessionid/:sessionId" element={<PlayingGame />} />
         <Route path="/test" element={<Test />} />
         <Route path="/editGame/:quizId" element={<EditGame token={token } updatedQuestion={updatedQuestion}/>} />
-        <Route path="/editGame/:quizId/:questionIndex" element={<EditQuestion setUpdatedQuestion={setUpdatedQuestion}/>} />
+        <Route path="/editGame/:quizId/:questionIndex" element={<EditQuestion setUpdatedQuestion={setUpdatedQuestion} />} />
+        {/* player */}
+        <Route path="/kahoot.it" element={<Kahoot />} />
+        <Route path="/kahootProcess/:playerid" element={<KahootProcess />} />
     </Routes>
     </>
   );

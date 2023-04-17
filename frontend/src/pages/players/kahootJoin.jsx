@@ -3,6 +3,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CallAPI from '../../callAPI';
 import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
+
 // this is player join part
 
 function checkSessionId (sessionId, name, onSuccess, onError) {
@@ -10,9 +12,9 @@ function checkSessionId (sessionId, name, onSuccess, onError) {
   CallAPI('POST', `play/join/${sessionId}`, localStorage.getItem('token'), {
     name,
   })
-    .then(() => {
+    .then((data) => {
       if (typeof onSuccess === 'function') {
-        onSuccess();
+        onSuccess(data);
       }
     })
     .catch(() => {
@@ -27,9 +29,10 @@ function playingGame () {
   const [sessionId, setSessionId] = React.useState('');
   const [playerName, setPlayerName] = React.useState('');
   const [result, setResult] = React.useState(null);
-
-  const handleSuccess = () => {
+  const navigate = useNavigate();
+  const handleSuccess = (data) => {
     setResult(1);
+    navigate(`/kahootProcess/${data.playerId}`);
   };
 
   const handleError = () => {

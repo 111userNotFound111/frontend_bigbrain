@@ -1,5 +1,5 @@
 // import CallAPI from '../callAPI.jsx';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 // import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,13 +7,13 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import CallAPI from '../callAPI.jsx';
 import { useNavigate } from 'react-router-dom';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // this is edit quiz profile function
-async function startQuizAPI (quizId) {
+function startQuizAPI (quizId) {
   console.log('inputQuizDetail');
-  await CallAPI('POST', `admin/quiz/${quizId}`, localStorage.getItem('token'), '')
+  CallAPI('POST', `admin/quiz/${quizId}/start`, localStorage.getItem('token'), '')
 }
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -26,22 +26,27 @@ const style = {
   p: 4,
 };
 
-function StartQuizModal (quizId) {
+function StartQuizModal (inputId) {
   // modal
   const navigate = useNavigate();
-  const textRef = useRef(null);
-  const [buttonText, setButtonText] = useState('复制');
+  const [buttonText, setButtonText] = useState('copy');
   const handleClick = () => {
-    textRef.current.select();
-    document.execCommand('copy');
-    setButtonText('已经复制');
+    setButtonText('copyed');
     setTimeout(() => {
-      setButtonText('复制');
+      setButtonText('copy');
     }, 3000);
   };
-  const [id] = React.useState(quizId.inputQuizId);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const [id] = useState(inputId.inputQuizId);
+  const [open, setOpen] = useState(false);
+  const [sessionNumber, setSessionNumber] = useState(0);
+  console.log('sessionNumber', sessionNumber);
+  const handleOpen = () => {
+    setOpen(true);
+    startQuizAPI(id);
+    CallAPI('GET', `admin/quiz/${inputId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
+      setSessionNumber(data.active);
+    })
+  };
   const handleClose = () => setOpen(false);
   return (
     <div>
@@ -54,18 +59,17 @@ function StartQuizModal (quizId) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Start Game!
+            session number:{ sessionNumber }
           </Typography>
-
           {/* Button */}
-          <input type="text" ref={textRef} value="a s d" />
-          <Button variant="contained" onClick={handleClick} sx={{ m: 2 }}>{ buttonText }</Button>
+          <CopyToClipboard text={ sessionNumber }>
+            <Button variant="contained" onClick={handleClick} sx={{ m: 2 }}>{ buttonText }</Button>
+          </CopyToClipboard>
           <p style={{ margin: '20px 0' }} />
           <p style={{ margin: '20px 0' }} />
           <Button variant="contained" onClick={() => {
             handleClose();
-            startQuizAPI(id);
-            navigate(`/playingGame/${quizId.inputQuizId}`);
+            navigate(`/playingGame/quizid/${inputId.inputQuizId}/sessionid/${sessionNumber}`);
           }} sx={{ m: 2 }} >Go!</Button>
           <Button variant="outlined" onClick={() => { handleClose() }}>Close</Button>
         </Box>

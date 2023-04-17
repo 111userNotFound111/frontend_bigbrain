@@ -1,49 +1,58 @@
 import * as React from 'react';
 import NavBar from '../component/navBar.jsx'; // 重命名组件
-import { useParams, } from 'react-router-dom';
-// import createGame from './component/createQuiz.jsx';
-// import ShowQuizInCard from '../component/showQuiz.jsx';
-// import { styled } from '@mui/material/styles';
-// import Box from '@mui/material/Box';
-// import Paper from '@mui/material/Paper';
-// import Grid from '@mui/material/Unstable_Grid2';
-// import { useEffect } from 'react';
-// import Box from '@mui/material/Box';
-import CallAPI from '../callAPI.jsx';
+import { useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-// import ReactDOM from 'react-dom';
-// import { CopyToClipboard } from 'react-copy-to-clipboard';
+import callAPI from '../callAPI.jsx'
 
 // this is edit quiz profile function
-async function startQuiz (quizId, onSuccess, onError) {
-  await CallAPI('POST', `admin/quiz/${quizId}/start`, localStorage.getItem('token'), '').then(() => {
-    onSuccess();
-    // then get the
-  }).catch(() => {
-    onError();
-  });
-}
-
 function playingGame () {
+  // this is the session id
+  // const { sessionId } = useParams();
+  const { quizId } = useParams();
   const [open, setOpen] = React.useState(true);
   const [result, setResult] = React.useState(null);
-
+  const [stage, setStage] = React.useState('');
   const handleSuccess = () => {
-    setResult(1);
+    setResult(0);
   };
 
-  const handleError = () => {
-    setResult(0);
+  // const handleError = () => {
+  // setResult(0);
+  // };
+  const handleStartButtonClick = () => {
+    callAPI('POST', `admin/quiz/${quizId}/start`, localStorage.getItem('token'), '').then((data) => {
+      setStage(data.stage);
+      console.log('stage', data.stage);
+    });
+    handleSuccess();
+    console.log('already started', stage);
+  };
+
+  const handleNextButtonClick = () => {
+    callAPI('POST', `admin/quiz/${quizId}/advance`, localStorage.getItem('token'), '').then((data) => {
+      setStage(data.stage);
+      console.log('stage', data.stage);
+    });
+    handleSuccess();
+    console.log('already started', stage);
+  };
+
+  const handleEndButtonClick = () => {
+    callAPI('POST', `admin/quiz/${quizId}/end`, localStorage.getItem('token'), '').then((data) => {
+      setStage(data.stage);
+      console.log('stage', data.stage);
+    });
+    handleSuccess();
+    console.log('already started', stage);
   };
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
   const action = (
@@ -58,12 +67,12 @@ function playingGame () {
       </IconButton>
     </React.Fragment>
   );
-  const { quizId } = useParams();
-  startQuiz(quizId, handleSuccess, handleError);
   return (
     <>
       <NavBar />
-      <Button variant="contained" onClick={() => { }}>copy session link</Button>
+      <h1>Current Stage:{stage}</h1>
+      <Button variant="contained" onClick={handleStartButtonClick}>Start</Button>
+      <Button variant="contained" onClick={handleNextButtonClick}>Next question</Button>
       {result === 0 && <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -71,6 +80,7 @@ function playingGame () {
         message="already started"
         action={action}
       />}
+      <Button variant="contained" onClick={handleEndButtonClick}>End</Button>
     <br />
     </>
   )

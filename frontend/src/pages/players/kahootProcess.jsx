@@ -1,27 +1,20 @@
 import * as React from 'react';
-// import Typography from '@mui/material/Typography';
-// import Button from '@mui/material/Button';
-// import CallAPI from '../../callAPI';
-// import MuiAlert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import CallAPI from '../../callAPI';
+import { useParams } from 'react-router-dom';
+
 // this is the process part
 
-// function getQuestion (quizId) {
-//   console.log('getQuestion');
-//   // CallAPI('GET', `play/quiz/${quizId}`, localStorage.getItem('token'), {
-//   //   name
-//   // }).catch(() => {
-//   //   console.log('eorror');
-//   // });
-// }
+export default function PlayerProcess () {
+  const { playerid } = useParams();
+  // const [gameStatus, setGameStatus] = React.useState(false);
 
-function PlayerProcess () {
-  // const [quizId, setQuizId] = React.useState('');
-  // const [question, setQuestion] = React.useState('');
+  async function onClickFunction () {
+    await CallAPI('GET', `play/${playerid}/question`, localStorage.getItem('token'), '').then((data) => {
+      console.log(data)
+    });
+  }
   return (
-    <>
-
-    </>
+    <Button variant="contained" onClick={onClickFunction}>get question</Button>
   )
 }
-
-export default PlayerProcess;
