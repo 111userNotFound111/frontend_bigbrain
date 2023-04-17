@@ -1,0 +1,124 @@
+// import libraries
+import React, { useState } from 'react';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Checkbox } from '@mui/material';
+// import components
+import CustomTextField from '../component/customTextField.jsx'
+
+export default function AddQuestionModal ({ onSubmit }) {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
+  const [timeLimit, setTimeLimit] = useState('');
+  const [pointsAllocated, setPointsAllocated] = useState('');
+  const [answer, setAnswer] = useState(Array.from({ length: 6 }, () => false));
+  const [correctAnswer, setCorrectAnswer] = useState(Array.from({ length: 6 }, () => false));
+
+  function handleOpen () {
+    setOpen(true);
+  }
+
+  function handleClose () {
+    setOpen(false);
+  }
+
+  function handleSubmit (event) {
+    event.preventDefault();
+    console.log('Title: ', title);
+    console.log('thumbnail: ', thumbnail);
+    console.log('time limit: ', timeLimit);
+    console.log('pointsAllocated: ', pointsAllocated)
+    console.log('Answer: ', answer);
+    console.log('Correct answer: ', correctAnswer);
+    // Handle form submission logic here
+    const newQuestion = {
+      title,
+      thumbnail,
+      timeLimit,
+      pointsAllocated,
+      correctAnswer,
+      answer,
+    };
+    onSubmit(newQuestion)
+    handleClose()
+  }
+
+  // upload image, convert and store image to base64
+  function uploadThumbnail (event) {
+    const img = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      setThumbnail(reader.result)
+    }
+    reader.readAsDataURL(img)
+  }
+
+  function handleOptionChange (index, value) {
+    const newAnswer = [...answer];
+    newAnswer[index] = value;
+    setAnswer(newAnswer);
+  }
+
+  function handleCheckboxChange (index) {
+    const newCorrectAnswer = [...correctAnswer];
+    newCorrectAnswer[index] = !newCorrectAnswer[index];
+    setCorrectAnswer(newCorrectAnswer);
+  }
+
+  return (
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Button variant="contained" style={{ width: '60%' }} onClick={handleOpen}>Add Question</Button>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Add Question</DialogTitle>
+                <DialogContent>
+                    <CustomTextField
+                        autoFocus
+                        margin="dense"
+                        label="Question Title"
+                        fullWidth
+                        //   value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <CustomTextField
+                        margin="dense"
+                        label="Time Limit (seconds)"
+                        fullWidth
+                        //   value={timeLimit}
+                        onChange={(e) => setTimeLimit(e.target.value)}
+                    />
+                    <CustomTextField
+                        margin="dense"
+                        label="Points Allocated"
+                        fullWidth
+                        //   value={pointsAllocated}
+                        onChange={(e) => setPointsAllocated(e.target.value)}
+                    />
+                    <div>
+                        <span style={{ fontWeight: 'bold' }}> Upload A Thumbnail</span> <br />
+                        <input type="file" accept="image/*" style={{ marginBottom: '10px' }} onChange={uploadThumbnail} />
+                    </div>
+                    <hr />
+                    <span style={{ fontWeight: 'bold' }}>Input Answer and Select the Correct Answer</span>
+                    {Array.from({ length: 6 }, (_, index) => (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                            <Checkbox
+                                //   checked={correctAnswer[index]}
+                                onChange={() => handleCheckboxChange(index)}
+                            />
+                            <CustomTextField
+                                margin="dense"
+                                label={`Option ${index + 1}`}
+                                fullWidth
+                                //   value={answer[index]}
+                                onChange={(e) => handleOptionChange(index, e.target.value)}
+                            />
+                        </div>
+                    ))}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleSubmit} variant="contained" color="primary">Submit</Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+  );
+}

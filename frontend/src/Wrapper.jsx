@@ -4,6 +4,7 @@ import SignIn from './pages/signIn'
 import SignUp from './pages/signUp'
 import Dashboard from './pages/dashboard'
 import EditGame from './pages/editGame'
+import EditQuestion from './pages/editQuestion'
 
 // the Wrapper function is located inside the App router
 // App -> Wrapper
@@ -12,6 +13,7 @@ function Wrapper () {
   const [dashload, setDashload] = React.useState(true);
   const navigate = useNavigate();
   const location = useLocation();
+  const [updatedQuestion, setUpdatedQuestion] = React.useState(null);
 
   // if sign in or sign up success, store token to localStorage and navigate to dashboard
   function storeToken (tokenInput) {
@@ -53,7 +55,8 @@ function Wrapper () {
         <Route path="/signup" element={<SignUp onSuccess={storeToken} />} />
         <Route path="/signin" element={<SignIn onSuccess={storeToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token}/>} />
-        <Route path="/editGame/:gameId" element={<EditGame />} />
+        <Route path="/editGame/:quizId" element={<EditGame token={token } updatedQuestion={updatedQuestion}/>} />
+        <Route path="/editGame/:quizId/:questionIndex" element={<EditQuestion setUpdatedQuestion={setUpdatedQuestion}/>} />
     </Routes>
     </>
   );

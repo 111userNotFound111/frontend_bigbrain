@@ -1,14 +1,15 @@
 // input quiz id, output a card with with the basic info
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import EditQuizModal from './editQuiz.jsx';
 import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useState, useEffect } from 'react';
+import { Button } from '@mui/material';
 import CallAPI from '../callAPI.jsx';
 import CardMedia from '@mui/material/CardMedia';
 
@@ -21,6 +22,7 @@ export default function showQuizInCard (inputQuizId) {
   const [quizId] = useState(inputQuizId.inputQuizId);
   const [quizName, setQuizName] = useState('');
   const [quizThumbnail, setQuizThumbnail] = useState('');
+  const navigate = useNavigate();
   useEffect(() => {
     CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
       setQuizName(data.name);
@@ -34,6 +36,9 @@ export default function showQuizInCard (inputQuizId) {
     });
   }, [])
 
+  function handleEditQuiz () {
+    navigate(`/editGame/${quizId}`);
+  }
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined">
@@ -63,7 +68,7 @@ export default function showQuizInCard (inputQuizId) {
         <br />
       </Typography>
       <br />
-          <EditQuizModal inputQuizId={inputQuizId.inputQuizId} />
+        <Button variant="contained" onClick={handleEditQuiz} id={quizId}>edit Quiz</Button>
     </CardContent>
       </Card>
     </Box>

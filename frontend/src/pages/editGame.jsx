@@ -1,137 +1,159 @@
-import React, { useState } from 'react';
-import { useParams, } from 'react-router-dom';
+// import libraries
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, } from 'react-router-dom';
+
+// import components
+import { Button, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import { Delete, Edit, } from '@mui/icons-material';
+import callAPI from '../callAPI.jsx'
+import AddQuestionForm from '../component/addQuestionsForm.jsx'
 import CustomTextField from '../component/customTextField.jsx'
 import CustomNavBar from '../component/customNavBar.jsx'
-import { Button, Modal, Box, } from '@mui/material';
 
-export default function editGame () {
-  const { gameId } = useParams();
-  const [image64, setImage] = useState(null);
-  const [imageName, setImageName] = useState('');
-  const [questions, setQuestions] = useState([]);
-  const [open, setOpen] = useState(false);
+export default function editGame ({ token, updatedQuestion }) {
+  const { quizId } = useParams();
+  const navigate = useNavigate();
+  const [quizInfo, setQuizInfo] = useState({})
+  const [newQuizName, setNewQuizName] = useState('')
+  const [newThumbnail64, setThumbnail] = useState(null);
+  const [questions, setQuestions] = useState([])
 
+  // Second store game info into variables every time quizInfo changes
+  useEffect(() => {
+    async function fetchQuizData () {
+      const quizData = await callAPI('GET', `admin/quiz/${quizId}`, token, {});
+      console.log('fet quiz data begins')
+      setQuizInfo(quizData);
+      setNewQuizName(quizData.name);
+      setThumbnail(quizData.thumbnail);
+      setQuestions(quizData.questions);
+      console.log('updated questions', updatedQuestion)
+      if (updatedQuestion) {
+        setQuestions(updatedQuestion)
+      }
+    }
+    fetchQuizData();
+  }, []);
+
+  // convert img to base64
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
       const base64 = event.target.result;
-      setImage(base64);
+      setThumbnail(base64);
     };
     reader.readAsDataURL(file);
-    setImageName(file.name);
   };
 
-  const handleOpen = () => {
-    setOpen(true);
+  console.log('quiz name :', newQuizName)
+  console.log('quiz questions :', questions)
+  // console.log('quiz thumbnail :', newThumbnail64)
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // Third edit variables and send back to database
+  function editQuizDetails () {
+    console.log('edit quiz starts')
+    callAPI('PUT', `admin/quiz/${quizId}`, token, {
+      questions,
+      name: newQuizName,
+      thumbnail: newThumbnail64
+    })
+  }
+  // convert base64 back to image
+  function Base64ToImage (base64) {
+    const image = new Image();
+    image.src = base64;
+    return image;
+  }
+  // add new question using Modal
+  function addNewQuestions (newQuestion) {
+    setQuestions([...questions, newQuestion])
+  }
+  function handleEditQuestion (index) {
+    console.log('current selected question to edit :', questions, 'with index', index)
+    navigate(`/editGame/${quizId}/${index}`, { state: questions });
+  }
 
-  const handleAddQuestion = () => {
-    // get values from form inputs
-    const questionName = document.getElementById('question-name-input').value;
-    const timeAllowed = document.getElementById('time-allowed-input').value;
-    const pointsAllocated = document.getElementById('points-allocated-input').value;
-    const option1 = document.getElementById('option1-input').value;
-    const option2 = document.getElementById('option2-input').value;
-    const option3 = document.getElementById('option3-input').value;
-    const option4 = document.getElementById('option4-input').value;
-    const correctAnswer = document.getElementById('correct-answer-input').value;
+  function handleDeleteQuestion (index) {
+    const updatedQuestions = [...questions];
+    updatedQuestions.splice(index, 1);
+    setQuestions(updatedQuestions);
+  }
 
-    // create new question object
-    const newQuestion = {
-      name: questionName,
-      timeAllowed,
-      pointsAllocated,
-      options: [option1, option2, option3, option4],
-      correctAnswer
-    };
-
-    // add new question to questions state
-    setQuestions([...questions, newQuestion]);
-
-    // close modal
-    handleClose();
-  };
-
-  console.log(image64)
   return (
-    <>
-      <CustomNavBar/>
+    <div>
+      <form onSubmit={handleSubmit} style={{ marginBottom: '50px' }}>
+        <CustomNavBar />
+        <div>
+          <h1>Edit Game : {quizInfo.name}</h1>
+          <span>Game ID : {quizId}</span>
+        </div> <br />
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <CustomTextField
+              required
+              style={{ width: '60%' }}
+              id="outlined-required"
+              label="Quiz Name"
+              value={newQuizName || ''}
+              onChange={(quizName) => setNewQuizName(quizName.target.value)}
+            />
+          </div>
 
-      <div>
-        <h1>Edit Game </h1>
-        <span>Game ID : {gameId}</span>
-      </div> <br />
-
-      <div>
-        <CustomTextField
-          required
-          id="outlined-required"
-          label="Quiz Name"
-        />
-        <CustomTextField
-          required
-          id="outlined-required"
-          label="Image"
-          value={imageName}
-          readOnly={true}
-        />
-        <Button variant="contained" component="label">
-          Upload Image
-          <input
-            hidden
-            accept="image/*"
-            multiple
-            type="file"
-            onChange={handleImageChange}
-          />
-        </Button>
-      </div>
-      <hr/>
-      <div>
-        <h1> Questions </h1>
-        <Button variant="contained" onClick={handleOpen}> Add Questions </Button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-        >
-          <Box sx={{ backgroundColor: 'white', padding: '20px' }}>
-            <h2>Add Question</h2>
-            <CustomTextField id="question-name-input" label="Question Name" variant="outlined" fullWidth />
-            <CustomTextField id="time-allowed-input" label="Time Allowed (sec)" variant="outlined" fullWidth />
-            <CustomTextField id="points-allocated-input" label="Points Allocated" variant="outlined" fullWidth />
-            <CustomTextField id="option1-input" label="Option 1" variant="outlined" fullWidth />
-            <CustomTextField id="option2-input" label="Option 2" variant="outlined" fullWidth />
-<CustomTextField id="option3-input" label="Option 3" variant="outlined" fullWidth />
-<CustomTextField id="option4-input" label="Option 4" variant="outlined" fullWidth />
-<CustomTextField id="correct-answer-input" label="Correct Answer" variant="outlined" fullWidth />
-<Button variant="contained" onClick={handleAddQuestion}> Add </Button>
-</Box>
-</Modal>
-{questions.map((question, index) => {
-  return (
-<div key={index}>
-<h2>{question.name}</h2>
-<p>Time Allowed: {question.timeAllowed} seconds</p>
-<p>Points Allocated: {question.pointsAllocated}</p>
-<h3>Options:</h3>
-<ul>
-{question.options.map((option, index) => {
-  return (
-<li key={index}>{option}</li>
-  );
-})}
-</ul>
-<p>Correct Answer: {question.correctAnswer}</p>
-<hr />
-</div>
-  );
-})}
-</div>
-</>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <img src={newThumbnail64 ? Base64ToImage(newThumbnail64).src : 'https://i.imgur.com/3oqzZ8K.png'} alt="thumbnail" style={{ width: '30%', height: '30%' }} />
+          </div> <br />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button style={{ width: '60%' }} variant="contained" component="label">
+              Upload Image
+              <input
+                hidden
+                accept="image/*"
+                multiple
+                type="file"
+                onChange={handleImageChange}
+              />
+            </Button>
+          </div> <br /> <br />
+        </div>
+        <hr />
+        {/* below are questions section, do not alter any style */}
+        <div>
+          <h1> Questions </h1>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <AddQuestionForm onSubmit={addNewQuestions} />
+          </div>
+          <br />
+          <List style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+            {questions && questions.map((question, index) => (
+              <ListItem key={index} style={{
+                marginBottom: '10px',
+                backgroundColor: '#e6f3ff',
+                width: '60%',
+              }}>
+                <ListItemText primary={question.title} />
+                <div>
+                  <IconButton aria-label="edit" onClick={() => handleEditQuestion(index)}>
+                    <Edit />
+                  </IconButton>
+                  <IconButton aria-label="delete" onClick={() => handleDeleteQuestion(index)}>
+                    <Delete />
+                  </IconButton>
+                </div>
+              </ListItem>
+            ))}
+          </List>
+          <hr />
+          <br /> <br />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button type="submit" variant="contained" onClick={editQuizDetails} style={{ backgroundColor: 'green', color: 'white', width: '60%' }}>Edit Game</Button>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 }
