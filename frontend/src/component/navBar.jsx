@@ -9,6 +9,8 @@ import Input from '@mui/material/Input';
 import createQuiz from './createQuiz';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import { ReactComponent as BrainIcon } from '../assets/bigBrain.svg';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -20,7 +22,17 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const LogoBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+});
 
+const LogoText = styled(Typography)({
+  fontFamily: 'Roboto',
+  fontSize: '32px',
+  fontWeight: 'bold',
+  color: '#fff',
+});
 function CreateModal () {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -116,6 +128,20 @@ export default function DashboardNavBar () {
         </AppBar>
       </Box>
     );
+  }
+  if (location.pathname.includes('/')) {
+    return (
+      <Box sx={{ flexGrow: 1 }} >
+        <AppBar position="static">
+            <Toolbar>
+              <LogoBox>
+                <BrainIcon width="50px" height="50px" style={{ marginRight: '10px' }} />
+                <LogoText variant="h5">Big Brain</LogoText>
+              </LogoBox>
+            </Toolbar>
+        </AppBar>
+      </Box>
+    )
   } else {
     return (
       <Box sx={{ flexGrow: 1 }} >
