@@ -49,6 +49,9 @@ export default function showQuizInCard (inputQuizId) {
   function handleEditQuiz () {
     navigate(`/editGame/${quizId}`);
   }
+  function handleShowPreQuiz () {
+    navigate(`/showPrevious/${quizId}`);
+  }
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined">
@@ -76,17 +79,17 @@ export default function showQuizInCard (inputQuizId) {
       <Typography variant="body2">
         time required: {timelimit}(s)
         <br />
+        <br />
       </Typography>
-          <br />
-
+          <Button variant="contained" onClick={handleShowPreQuiz} >Show preivous session</Button>
         </CardContent>
         <CardActions>
           <Grid container spacing={2} justifyContent="center" alignItems="center">
             <Grid item>
-            <Button variant="contained" onClick={handleEditQuiz} id={quizId}>edit Quiz</Button>
-          </Grid>
+              <Button variant="contained" onClick={handleEditQuiz} id={quizId}>edit Quiz</Button>
+            </Grid>
             <Grid item>
-            <StartQuiz inputQuizId={inputQuizId.inputQuizId} />
+              <StartQuiz inputQuizId={inputQuizId.inputQuizId} />
       </Grid>
     </Grid>
         </CardActions>

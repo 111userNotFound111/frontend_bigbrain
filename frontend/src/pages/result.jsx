@@ -17,6 +17,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 function result () {
   const [havePlayer, setHavePlayer] = React.useState(true);
   const [barData, setBarData] = React.useState([]);
+  const { sessionid } = useParams();
 
   const BarChartExample = () => (
     <BarChart width={600} height={300} data={barData}>
@@ -27,7 +28,6 @@ function result () {
     </BarChart>
   );
   // this is the session id
-  const { sessionid } = useParams();
   // const [result, setResult] = React.useState(null);
   function createData (name, score, rank) {
     return { name, score, rank };
@@ -131,7 +131,6 @@ function result () {
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell align="right">score</TableCell>
-              <TableCell align="right">Rank</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -144,7 +143,6 @@ function result () {
                   {row.name}
                 </TableCell>
                 <TableCell align="right">{row.score}</TableCell>
-                <TableCell align="right">{row.rank}</TableCell>
               </TableRow>
             ))}
           </TableBody>

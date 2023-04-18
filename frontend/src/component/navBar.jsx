@@ -91,7 +91,7 @@ export default function DashboardNavBar () {
       </Box>
     );
   }
-  if (location.pathname.includes('/playingGame') || location.pathname.includes('/result') || location.pathname.includes('/editGame')) {
+  if (location.pathname.includes('/playingGame') || location.pathname.includes('/result') || location.pathname.includes('/editGame') || location.pathname.includes('/showPrevious')) {
     return (
       <Box sx={{ flexGrow: 1 }} >
         <AppBar position="static">
