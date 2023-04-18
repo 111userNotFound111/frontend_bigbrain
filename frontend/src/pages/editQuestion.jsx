@@ -65,14 +65,18 @@ export default function editQuestion ({ setUpdatedQuestion }) {
     navigate(`/editGame/${quizId}`)
   }
 
+  function setUrl (inputURL) {
+    setThumbnail(inputURL);
+  }
   // console.log('current image', thumbnail)
 
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ marginBottom: '50px' }}>
       <NavBar /> <br />
-      <h1>Edit Question: {title} Quiz Id {quizId}</h1>
-      <div>Question Index: {questionIndex} </div> <br /> <br />
+      <h1>Edit Question: {title} </h1>
+      <span>Quiz Id: {quizId} Question Index: {questionIndex} </span>
+      <br /> <br />
 
       <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', }}>
         <CustomTextField
@@ -97,11 +101,36 @@ export default function editQuestion ({ setUpdatedQuestion }) {
           style={{ width: '90%' }}
           onChange={(points) => setPointsAllocated(points.target.value)}
         />
+        <h3>Add A Youtube Link OR Upload A Thumbnail</h3>
+        <CustomTextField
+            margin="dense"
+            label="Youtube URL"
+            fullWidth
+            onChange={(e) => setUrl(e.target.value)}
+        />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <img src={thumbnail ? Base64ToImage(thumbnail).src : 'https://i.imgur.com/3oqzZ8K.png'} alt="thumbnail" style={{ width: '100%', height: '400px' }} />
+          {thumbnail && thumbnail.match(/https?:\/\/(?:www\.)?youtube\.com\/watch\?v=(.*)/)
+            ? (
+            <iframe
+              width="400"
+              height="450"
+              src={`https://www.youtube.com/embed/${RegExp.$1}`}
+              title="YouTube"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+              )
+            : (
+            <img
+              src={thumbnail ? Base64ToImage(thumbnail).src : 'https://i.imgur.com/3oqzZ8K.png'}
+              alt="thumbnail"
+              style={{ width: '100%', height: '400px' }}
+            />
+              )}
         </div> <br />
+
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', }}>
-          <Button style={{ width: '50%' }} variant="contained" component="label">
+          <Button style={{ width: '60%' }} variant="contained" component="label">
               Upload Image
               <input
                 hidden

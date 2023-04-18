@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import CallAPI from '../../callAPI';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
-
+import NavBar from '../../component/navBar';
 // this is player join part
 
 function checkSessionId (sessionId, name, onSuccess, onError) {
@@ -30,6 +30,9 @@ function playingGame () {
   const [playerName, setPlayerName] = React.useState('');
   const [result, setResult] = React.useState(null);
   const navigate = useNavigate();
+  if (location.pathname.includes('/kahoot.it')) {
+    console.log('location path includes kahoot it', location.pathname)
+  }
   const handleSuccess = (data) => {
     setResult(1);
     navigate(`/kahootProcess/${data.playerId}`);
@@ -43,12 +46,14 @@ function playingGame () {
   };
 
   return (
-    <div
+    <div>
+      <NavBar/>
+      <div
     style={{
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100vh',
+      height: '70vh',
     }}
   >
     <>
@@ -70,6 +75,7 @@ function playingGame () {
       </div>
     </>
   </div>
+    </div>
   )
 }
 
