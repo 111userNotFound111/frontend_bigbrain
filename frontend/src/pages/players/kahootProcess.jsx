@@ -156,7 +156,7 @@ export default function PlayerProcess () {
                       <img
                         src={thumbnail ? convertImg(thumbnail).src : 'https://i.imgur.com/3oqzZ8K.png'}
                         alt="thumbnail"
-                        style={{ width: '100%', height: '400px' }}
+                        style={{ width: '60%', height: '400px' }}
                       />
                         )}
                   </div> <br />
