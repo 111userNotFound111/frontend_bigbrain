@@ -92,25 +92,7 @@ export default function DashboardNavBar () {
       </Box>
     );
   }
-  if (location.pathname.includes('/editGame')) {
-    return (
-      <nav>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
-            <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button color="inherit" onClick={
-                () => {
-                  navigate('/dashboard');
-                }
-              }>Dashboard</Button>
-              <Button color="inherit" onClick={Logout}>Logout</Button>
-            </Toolbar>
-          </AppBar>
-        </Box>
-      </nav>
-    );
-  }
-  if (location.pathname.includes('/playingGame') || location.pathname.includes('/result')) {
+  if (location.pathname.includes('/playingGame') || location.pathname.includes('/result') || location.pathname.includes('/editGame')) {
     return (
       <Box sx={{ flexGrow: 1 }} >
         <AppBar position="static">
