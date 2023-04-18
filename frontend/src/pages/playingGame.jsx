@@ -18,6 +18,7 @@ function playingGame () {
   const [stage, setStage] = React.useState(0);
   const [questionLength, setQuestionLength] = React.useState(-2);
   const [msg, setMsg] = React.useState('Click next question to start the question');
+  const [resultDisable, setResultDisable] = React.useState(true);
   const navigate = useNavigate();
   const handleSuccess = () => {
     setResult(0);
@@ -52,6 +53,7 @@ function playingGame () {
       callAPI('POST', `admin/quiz/${quizId}/end`, localStorage.getItem('token'), '').catch(() => {
         setMsg('The game is over');
       });
+      setResultDisable(false);
     }
     handleSuccess();
   };
@@ -61,6 +63,7 @@ function playingGame () {
     callAPI('POST', `admin/quiz/${quizId}/end`, localStorage.getItem('token'), '').catch(() => {
       setMsg('The game is over');
     });
+    setResultDisable(false);
     handleSuccess();
   };
 
@@ -102,7 +105,7 @@ function playingGame () {
           <br />
           <Button variant="contained" onClick={handleEndButtonClick}>End</Button>
           <br />
-          <Button variant='contained' onClick={handleResultClick}>view result</Button>
+          <Button variant='contained' disabled={resultDisable} onClick={handleResultClick}>view result</Button>
         </div>
       </div>
     </>
