@@ -23,6 +23,7 @@ export default function showQuizInCard (inputQuizId) {
   const [quizId] = useState(inputQuizId.inputQuizId);
   const [quizName, setQuizName] = useState('');
   const [quizThumbnail, setQuizThumbnail] = useState('');
+  const [timelimit, setTimelimit] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
     CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
@@ -32,6 +33,13 @@ export default function showQuizInCard (inputQuizId) {
       } else {
         setQuizThumbnail('https://i.imgur.com/3oqzZ8K.png');
       }
+      let time = 0;
+      console.log('data', data.questions);
+      data.questions.forEach((res) => {
+        console.log('time', res);
+        time = time + parseInt(res.timeLimit);
+      });
+      setTimelimit(time);
     }).catch(() => {
       console.log('error in showQuizInCard');
     });
@@ -65,7 +73,7 @@ export default function showQuizInCard (inputQuizId) {
         alt="quiz thumbnail"
       />
       <Typography variant="body2">
-        time required: xxx
+        time required: {timelimit}(s)
         <br />
       </Typography>
           <br />
@@ -85,19 +93,3 @@ export default function showQuizInCard (inputQuizId) {
     </Box>
   );
 }
-
-// const [quizzes, setQuizzes] = React.useState([])
-
-// async function fetchAllQuizzes () {
-//   // console.log('the current token passed in is :', token)
-//   const response = await fetch('http://localhost:5005/admin/quiz', {
-//     method: 'GET',
-//     headers: {
-//       'Content-type': 'application/json',
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   const data = await response.json();
-//   setQuizzes(data.quizzes)
-//   // console.log(quizzes)
-// }
