@@ -60,7 +60,6 @@ export default function editQuestion ({ setUpdatedQuestion }) {
     }
     const newQuestionArray = [...questionsArray];
     newQuestionArray[questionIndex] = updatedQuestion;
-    console.log('the new edited array', newQuestionArray)
     setUpdatedQuestion(newQuestionArray);
     navigate(`/editGame/${quizId}`)
   }
