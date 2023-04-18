@@ -16,12 +16,11 @@ export default function PlayerProcess () {
   const [errorMessage, setErrorMessage] = useState('');
   const [currentStatus, setCurrentStatus] = useState(false);
   // for question title, thumbnail, countdown, options
-  const [currentQuestionInfo, setCurrentQuestionInfo] = useState('');
   const [questionText, setQuestionText] = useState('');
   const [thumbnail, setThumbnail] = useState(null);
   const [countDown, setCountDown] = useState(null);
   const [answer, setAnswer] = useState([]);
-  const [answerId, setAnswerId] = useState([]);
+  const [answerIds, setAnswerIds] = useState([]);
 
   // First : continously poll until status change from false to true
   async function statusUpdate () {
@@ -46,7 +45,6 @@ export default function PlayerProcess () {
   // if status is TRUE, get the first question
   async function getQuestion () {
     const questionInfo = await CallAPI('GET', `play/${playerid}/question`, '', '')
-    setCurrentQuestionInfo(questionInfo.question)
     setQuestionText(questionInfo.question.title)
     setThumbnail(questionInfo.question.thumbnail)
     setCountDown(questionInfo.question.timeLimit)
@@ -76,15 +74,35 @@ export default function PlayerProcess () {
     }
   }, [countDown]);
 
-  if (currentQuestionInfo) {
-    console.log('111111111111111111111111111111')
-    console.log('the current question info : ', currentQuestionInfo)
-    console.log('the current question text : ', questionText)
-    console.log('the current thumbnail : ', thumbnail)
-    console.log('the current countDown : ', countDown)
-    console.log('the current answer : ', answer)
-    console.log('the current answerId : ', answerId)
+  // submit answers
+  function submitAnswerId () {
+    console.log('submit answer starts')
+    CallAPI('PUT', `play/${playerid}/answer`, '', { answerIds })
+      .then((data) => { console.log(data) })
+      .catch((error) => setErrorMessage(error.message))
   }
+
+  // get correct Answer
+  function getCorrectAnswer () {
+    console.log('get correct answer starts')
+    CallAPI('GET', `play/${playerid}/answer`, '', {})
+      .then((data) => { console.log('THE ANSWERS ARE:', data) })
+  }
+
+  useEffect(() => {
+    if (countDown === 0) {
+      getCorrectAnswer();
+    }
+  }, [countDown]);
+
+  // if (currentQuestionInfo) {
+  //   console.log('111111111111111111111111111111')
+  //   console.log('the current question text : ', questionText)
+  //   console.log('the current thumbnail : ', thumbnail)
+  //   console.log('the current countDown : ', countDown)
+  //   console.log('the current answer : ', answer)
+  //   console.log('the current answerId : ', answerIds)
+  // }
 
   return (
     <div>
@@ -156,16 +174,16 @@ export default function PlayerProcess () {
                 {answer
                   .filter((item) => item !== false)
                   .map((item, index) => (
-                    <FormControlLabel key={index} label={item} control={ <Checkbox id={`${index}`} name={`${index}`} value={item} onChange={(e) => {
-                      if (e.target.checked) {
-                        setAnswerId((prevAnswerId) => [...prevAnswerId, index]);
+                    <FormControlLabel key={index} label={item} control={ <Checkbox id={`${index}`} name={`${index}`} value={item} onChange={(checkbox) => {
+                      if (checkbox.target.checked) {
+                        setAnswerIds((prevAnswerId) => [...prevAnswerId, index]);
                       } else {
-                        setAnswerId((prevAnswerId) => prevAnswerId.filter((id) => id !== index));
+                        setAnswerIds((prevAnswerId) => prevAnswerId.filter((id) => id !== index));
                       }
                     }}/>} sx={{ width: '70%', height: '50px', backgroundColor: '#2E8BC0', display: 'block', border: '1px solid #ccc', marginBottom: '10px', '&:hover': { backgroundColor: '#B1D4E0', cursor: 'pointer', }, }}/>
                   ))}
                   <br /> <br />
-                <Button type='submit' variant='contained' color='primary' style={{ width: '50%', backgroundColor: '#FFBF00', }}>Finish Question</Button>
+                <Button onClick={submitAnswerId} variant='contained' color='primary' style={{ width: '50%', backgroundColor: '#FFBF00', }}>Finish Question</Button>
               </div>
             </div>
           </div>
