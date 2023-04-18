@@ -111,18 +111,17 @@ export default function editQuestion ({ setUpdatedQuestion }) {
           {thumbnail && thumbnail.match(/https?:\/\/(?:www\.)?youtube\.com\/watch\?v=(.*)/)
             ? (
             <iframe
-              width="400"
-              height="450"
+              width='400'
+              height='450'
               src={`https://www.youtube.com/embed/${RegExp.$1}`}
-              title="YouTube"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              title='YouTube'
               allowFullScreen
             ></iframe>
               )
             : (
             <img
               src={thumbnail ? convertImg(thumbnail).src : 'https://i.imgur.com/3oqzZ8K.png'}
-              alt="thumbnail"
+              alt='thumbnail'
               style={{ width: '100%', height: '400px' }}
             />
               )}
@@ -161,7 +160,7 @@ export default function editQuestion ({ setUpdatedQuestion }) {
                   />
                 </div>
             ))}
-            <Button type="submit" variant="contained" color="primary" style={{ width: '50%', }}>Finish Edit Question</Button>
+            <Button type='submit' variant='contained' color='primary' style={{ width: '50%', }}>Finish Edit Question</Button>
           </div>
         </div>
       </form>
