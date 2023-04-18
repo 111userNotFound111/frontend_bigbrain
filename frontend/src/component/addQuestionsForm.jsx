@@ -78,7 +78,7 @@ export default function AddQuestionModal ({ onSubmit }) {
                     <CustomTextField
                         autoFocus
                         margin="dense"
-                        label="Question Title"
+                        label="Question Text"
                         fullWidth
                         //   value={title}
                         onChange={(e) => setTitle(e.target.value)}

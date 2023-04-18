@@ -32,7 +32,7 @@ export default function editQuestion ({ setUpdatedQuestion }) {
   }
 
   // convert base64 back to image
-  function Base64ToImage (thumbnail) {
+  function convertImg (thumbnail) {
     const image = new Image();
     image.src = thumbnail;
     return image;
@@ -121,7 +121,7 @@ export default function editQuestion ({ setUpdatedQuestion }) {
               )
             : (
             <img
-              src={thumbnail ? Base64ToImage(thumbnail).src : 'https://i.imgur.com/3oqzZ8K.png'}
+              src={thumbnail ? convertImg(thumbnail).src : 'https://i.imgur.com/3oqzZ8K.png'}
               alt="thumbnail"
               style={{ width: '100%', height: '400px' }}
             />
