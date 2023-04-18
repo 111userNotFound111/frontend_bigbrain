@@ -13,7 +13,6 @@ import NavBar from '../component/navBar.jsx'
 export default function editGame ({ token, updatedQuestion }) {
   const { quizId } = useParams();
   const navigate = useNavigate();
-  const [quizInfo, setQuizInfo] = useState({})
   const [newQuizName, setNewQuizName] = useState('')
   const [newThumbnail64, setThumbnail] = useState(null);
   const [questions, setQuestions] = useState([])
@@ -22,7 +21,6 @@ export default function editGame ({ token, updatedQuestion }) {
   async function fetchQuizData () {
     const quizData = await callAPI('GET', `admin/quiz/${quizId}`, token, {});
     console.log('fet quiz data begins')
-    setQuizInfo(quizData);
     setNewQuizName(quizData.name);
     setThumbnail(quizData.thumbnail);
     setQuestions(quizData.questions);
@@ -90,7 +88,7 @@ export default function editGame ({ token, updatedQuestion }) {
       <form onSubmit={handleSubmit} style={{ marginBottom: '50px' }}>
         <NavBar />
         <div>
-          <h1>Edit Game : {quizInfo.name}</h1>
+          <h1>Edit Game : {newQuizName}</h1>
           <span>Game ID : {quizId}</span>
         </div> <br />
         <div>
