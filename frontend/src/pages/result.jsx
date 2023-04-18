@@ -15,11 +15,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 // this is edit quiz profile function
 function result () {
-  const [barData, setBarData] = React.useState([
-    { name: 'January', pv: 2400 },
-    { name: 'February', pv: 1398 },
-    { name: 'March', pv: 200 },
-  ]);
+  const [havePlayer, setHavePlayer] = React.useState(true);
+  const [barData, setBarData] = React.useState([]);
 
   const BarChartExample = () => (
     <BarChart width={600} height={300} data={barData}>
@@ -32,8 +29,8 @@ function result () {
   // this is the session id
   const { sessionid } = useParams();
   // const [result, setResult] = React.useState(null);
-  function createData (name, score, total, rank) {
-    return { name, score, total, rank };
+  function createData (name, score, rank) {
+    return { name, score, rank };
   }
 
   const [rows, setRows] = React.useState([]);
@@ -45,72 +42,122 @@ function result () {
   //   createData('Gingerbread', 356, 16.0),
   // ];
 
-  // const handleError = () => {
-  // setResult(0);
-  // };
+  const [eachScore, setEachScore] = React.useState([]);
+  // player get in each question
+  const [playerGetScore, setPlayerGetScore] = React.useState([]);
+
+  const getScore = async () => {
+    const data = await callAPI('GET', `admin/session/${sessionid}/status`, localStorage.getItem('token'), '');
+    console.log('data status', data);
+    const newScores = data.results.questions.map((question) => {
+      console.log('question 1', question);
+      return question.pointsAllocated;
+    });
+    setEachScore(newScores);
+    setPlayerGetScore(Array(data.results.questions.length).fill(0));
+  }
+  useEffect(() => {
+    getScore();
+  }, []);
+
+  useEffect(() => {
+    if (eachScore.length !== 0) {
+      getResult();
+    }
+  }, [eachScore]);
+
   const getResult = () => {
     callAPI('GET', `admin/session/${sessionid}/results`, localStorage.getItem('token'), '').then((data) => {
+      if (data.results.length === 0) {
+        console.log('no body join this game');
+        setHavePlayer(false);
+      }
       data.results.forEach(awrArray => {
+        // each one
         console.log('data.results', awrArray);
-        let totalScore = 0;
         let getScore = 0;
-        awrArray.answers.forEach(awr => {
-          console.log('inside', awr);
-          totalScore += awr.score;
+        awrArray.answers.forEach((awr, index) => {
+          // each answer
           if (awr.correct) {
-            getScore += awr.score;
+            console.log('correct');
+            getScore += parseInt(eachScore[index]);
+            // add to total score array
+            setPlayerGetScore((prevArray) =>
+              prevArray.map((num, playerIndex) => {
+                console.log('num', num);
+                if (index === playerIndex) {
+                  const newScore = parseInt(num) + parseInt(eachScore[playerIndex]);
+                  console.log('this is index', playerIndex);
+                  console.log('this is newScore', newScore);
+                  return newScore;
+                }
+                // to avoid return undefined
+                return num;
+              })
+            );
           }
         });
-        setRows((prev) => [...prev, createData(awrArray.name, getScore, totalScore, 0)]);
-        setBarData((prev) => [...prev, { name: awrArray.name, pv: 0 }]);
+        setRows((prev) => [...prev, createData(awrArray.name, getScore, 0)]);
       });
     }).catch((error) => {
       console.log(error);
     });
+    // each answer rank
   };
 
   useEffect(() => {
-    getResult();
-  }, []);
+    console.log('playerGetScore1111', playerGetScore);
+    const data = playerGetScore.map((score, index) => {
+      return { name: index + 1, pv: parseInt(score) / parseInt(eachScore[index]) };
+    });
+    setBarData(data);
+  }, [playerGetScore]);
 
-  return (
-    <>
-      <NavBar />
+  if (havePlayer === false) {
+    return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-                  <TableCell align="right">score</TableCell>
-            <TableCell align="right">total</TableCell>
-            <TableCell align="right">Rank</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.score}</TableCell>
-              <TableCell align="right">{row.total}</TableCell>
-              <TableCell align="right">{row.rank}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-        </TableContainer>
-          {/* barchart */}
-        <BarChartExample />
-        </div>
+        <h1>No body join this Game</h1>
       </div>
-    </>
-  )
+    )
+  } else {
+    return (
+      <>
+        <NavBar />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">score</TableCell>
+              <TableCell align="right">Rank</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.score}</TableCell>
+                <TableCell align="right">{row.rank}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+            </TableContainer>
+            <div style={{ height: '50px' }} />
+            {/* barchart */}
+          <BarChartExample />
+          </div>
+        </div>
+      </>
+    )
+  }
 }
 
 export default result;
