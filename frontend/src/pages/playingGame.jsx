@@ -1,21 +1,24 @@
 import * as React from 'react';
 import NavBar from '../component/navBar.jsx'; // 重命名组件
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import callAPI from '../callAPI.jsx'
+import { useEffect } from 'react'
 
 // this is edit quiz profile function
 function playingGame () {
   // this is the session id
-  // const { sessionId } = useParams();
+  const { sessionId } = useParams();
   const { quizId } = useParams();
   const [open, setOpen] = React.useState(true);
   const [result, setResult] = React.useState(null);
-  const [stage, setStage] = React.useState('');
+  const [stage, setStage] = React.useState(0);
+  const [questionLength, setQuestionLength] = React.useState(-2);
   const [msg, setMsg] = React.useState('Click next question to start the question');
+  const navigate = useNavigate();
   const handleSuccess = () => {
     setResult(0);
   };
@@ -23,27 +26,47 @@ function playingGame () {
   // const handleError = () => {
   // setResult(0);
   // };
+  const question = () => {
+    callAPI('GET', `admin/session/${sessionId}/status`, localStorage.getItem('token'), '').then((data) => {
+      setQuestionLength(data.results.questions.length);
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+  useEffect(() => {
+    question();
+  }, []);
 
   const handleNextButtonClick = () => {
-    callAPI('POST', `admin/quiz/${quizId}/advance`, localStorage.getItem('token'), '').then((data) => {
-      setStage(data.stage);
-      console.log('stage', data.stage);
-      if (data.stage != null) {
-        setMsg(`Question number: ${data.stage + 1}`);
-      }
-    });
+    console.log('stage,length', stage, questionLength);
+    if (stage !== questionLength && stage !== isNaN) {
+      setStage(stage + 1);
+      callAPI('POST', `admin/quiz/${quizId}/advance`, localStorage.getItem('token'), '').then((data) => {
+        console.log('data', data);
+      }).catch(() => {
+        setMsg('The game is over');
+      });
+      setMsg(`Question ${stage + 1}`);
+    } else {
+      setMsg('The game is over');
+      callAPI('POST', `admin/quiz/${quizId}/end`, localStorage.getItem('token'), '').catch(() => {
+        setMsg('The game is over');
+      });
+    }
     handleSuccess();
   };
 
   const handleEndButtonClick = () => {
-    callAPI('POST', `admin/quiz/${quizId}/end`, localStorage.getItem('token'), '').then((data) => {
-      setStage(data.stage);
-      console.log('stage', data.stage);
+    setMsg('The game is over');
+    callAPI('POST', `admin/quiz/${quizId}/end`, localStorage.getItem('token'), '').catch(() => {
+      setMsg('The game is over');
     });
     handleSuccess();
-    console.log('already started', stage);
   };
 
+  const handleResultClick = () => {
+    navigate(`/result/${sessionId}`);
+  };
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -78,6 +101,8 @@ function playingGame () {
           />}
           <br />
           <Button variant="contained" onClick={handleEndButtonClick}>End</Button>
+          <br />
+          <Button variant='contained' onClick={handleResultClick}>view result</Button>
         </div>
       </div>
     </>

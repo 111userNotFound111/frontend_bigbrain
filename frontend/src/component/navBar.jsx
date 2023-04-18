@@ -73,7 +73,6 @@ function CreateModal () {
 export default function DashboardNavBar () {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log('location', location);
   function Logout () {
     localStorage.clear();
     navigate('/');
@@ -111,7 +110,7 @@ export default function DashboardNavBar () {
       </nav>
     );
   }
-  if (location.pathname.includes('/playingGame')) {
+  if (location.pathname.includes('/playingGame') || location.pathname.includes('/result')) {
     return (
       <Box sx={{ flexGrow: 1 }} >
         <AppBar position="static">
