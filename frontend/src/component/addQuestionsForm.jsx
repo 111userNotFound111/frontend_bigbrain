@@ -38,6 +38,7 @@ export default function AddQuestionModal ({ onSubmit }) {
       correctAnswer,
       answer,
     };
+    console.log('appending new question', newQuestion)
     onSubmit(newQuestion)
     handleClose()
   }
@@ -62,6 +63,10 @@ export default function AddQuestionModal ({ onSubmit }) {
     const newCorrectAnswer = [...correctAnswer];
     newCorrectAnswer[index] = !newCorrectAnswer[index];
     setCorrectAnswer(newCorrectAnswer);
+  }
+
+  function setUrl (inputURL) {
+    setThumbnail(inputURL);
   }
 
   return (
@@ -91,9 +96,15 @@ export default function AddQuestionModal ({ onSubmit }) {
                         fullWidth
                         //   value={pointsAllocated}
                         onChange={(e) => setPointsAllocated(e.target.value)}
+                    /> <br />
+                    <span style={{ fontWeight: 'bold' }}> Add A Youtube Link OR Upload A Thumbnail</span> <br />
+                    <CustomTextField
+                        margin="dense"
+                        label="Youtube URL"
+                        fullWidth
+                        onChange={(e) => setUrl(e.target.value)}
                     />
                     <div>
-                        <span style={{ fontWeight: 'bold' }}> Upload A Thumbnail</span> <br />
                         <input type="file" accept="image/*" style={{ marginBottom: '10px' }} onChange={uploadThumbnail} />
                     </div>
                     <hr />

@@ -15,6 +15,17 @@ export default function PlayerProcess () {
     });
   }
   return (
+    <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}
+  >
+    <>
     <Button variant="contained" onClick={onClickFunction}>get question</Button>
+    </>
+    </div>
   )
 }

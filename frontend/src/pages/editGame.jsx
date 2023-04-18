@@ -56,15 +56,14 @@ export default function editGame ({ token, updatedQuestion }) {
   };
 
   // Third edit variables and send back to database
-  function editQuizDetails () {
-    console.log('edit quiz starts')
-    callAPI('PUT', `admin/quiz/${quizId}`, token, {
+  async function editQuizDetails () {
+    await callAPI('PUT', `admin/quiz/${quizId}`, token, {
       questions,
       name: newQuizName,
-      thumbnail: newThumbnail64
+      thumbnail: newThumbnail64,
+    }).then(() => {
+      navigate('/dashboard');
     })
-    console.log('edit quiz starts')
-    fetchQuizData();
   }
   // convert base64 back to image
   function Base64ToImage (base64) {
@@ -108,7 +107,7 @@ export default function editGame ({ token, updatedQuestion }) {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src={newThumbnail64 ? Base64ToImage(newThumbnail64).src : 'https://i.imgur.com/3oqzZ8K.png'} alt="thumbnail" style={{ width: '30%', height: '30%' }} />
+            <img src={newThumbnail64 ? Base64ToImage(newThumbnail64).src : 'https://i.imgur.com/3oqzZ8K.png'} alt="thumbnail" style={{ width: '60%', height: '400px' }} />
           </div> <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button style={{ width: '60%' }} variant="contained" component="label">

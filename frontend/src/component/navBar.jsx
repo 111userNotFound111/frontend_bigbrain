@@ -77,7 +77,6 @@ export default function DashboardNavBar () {
     localStorage.clear();
     navigate('/');
   }
-
   if (location.pathname === '/dashboard') {
     return (
       <Box sx={{ flexGrow: 1 }} >
@@ -110,7 +109,7 @@ export default function DashboardNavBar () {
       </Box>
     );
   }
-  if (location.pathname.includes('/')) {
+  if (location.pathname.includes('/') || location.pathname === '/kahoot.it' || location.pathname.includes('/kahootProcess')) {
     return (
       <Box sx={{ flexGrow: 1 }} >
         <AppBar position="static">
