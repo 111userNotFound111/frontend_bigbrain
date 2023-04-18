@@ -26,7 +26,6 @@ export default function editGame ({ token, updatedQuestion }) {
     setNewQuizName(quizData.name);
     setThumbnail(quizData.thumbnail);
     setQuestions(quizData.questions);
-    console.log('updated questions', updatedQuestion)
     if (updatedQuestion) {
       setQuestions(updatedQuestion)
     }

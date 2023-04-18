@@ -60,7 +60,6 @@ export default function editQuestion ({ setUpdatedQuestion }) {
     }
     const newQuestionArray = [...questionsArray];
     newQuestionArray[questionIndex] = updatedQuestion;
-    console.log('the new edited array', newQuestionArray)
     setUpdatedQuestion(newQuestionArray);
     navigate(`/editGame/${quizId}`)
   }
@@ -143,9 +142,8 @@ export default function editQuestion ({ setUpdatedQuestion }) {
         </div>
     </div>
 
-        <hr />
-
         <div>
+        <hr />
           <h2 style={{ fontWeight: 'bold' }}>Input Answer and Select the Correct Answer</h2>
           <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
             {Array.from({ length: 6 }, (_, index) => (

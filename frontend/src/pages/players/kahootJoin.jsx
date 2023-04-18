@@ -9,9 +9,7 @@ import NavBar from '../../component/navBar';
 
 function checkSessionId (sessionId, name, onSuccess, onError) {
   console.log('checksessionId');
-  CallAPI('POST', `play/join/${sessionId}`, localStorage.getItem('token'), {
-    name,
-  })
+  CallAPI('POST', `play/join/${sessionId}`, '', { name })
     .then((data) => {
       if (typeof onSuccess === 'function') {
         onSuccess(data);
@@ -30,12 +28,10 @@ function playingGame () {
   const [playerName, setPlayerName] = React.useState('');
   const [result, setResult] = React.useState(null);
   const navigate = useNavigate();
-  if (location.pathname.includes('/kahoot.it')) {
-    console.log('location path includes kahoot it', location.pathname)
-  }
+
   const handleSuccess = (data) => {
     setResult(1);
-    navigate(`/kahootProcess/${data.playerId}`);
+    navigate(`/player/${data.playerId}`);
   };
 
   const handleError = () => {

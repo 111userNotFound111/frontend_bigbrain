@@ -28,7 +28,7 @@ export default function showQuizInCard (inputQuizId) {
   useEffect(() => {
     CallAPI('GET', `admin/quiz/${inputQuizId.inputQuizId}`, localStorage.getItem('token'), '').then((data) => {
       setQuizName(data.name);
-      console.log('data tyhunnail', data.thumbnail);
+      // console.log('data tyhunnail', data.thumbnail);
       if (data.thumbnail !== null) {
         setQuizThumbnail(data.thumbnail);
       } else {

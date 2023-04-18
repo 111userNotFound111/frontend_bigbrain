@@ -64,8 +64,8 @@ function Wrapper () {
         <Route path="/editGame/:quizId" element={<EditGame token={token } updatedQuestion={updatedQuestion}/>} />
         <Route path="/editGame/:quizId/:questionIndex" element={<EditQuestion setUpdatedQuestion={setUpdatedQuestion} />} />
         {/* player */}
-        <Route path="/kahoot.it" element={<Kahoot />} />
-        <Route path="/kahootProcess/:playerid" element={<KahootProcess />} />
+        <Route path="/player" element={<Kahoot />} />
+        <Route path="/player/:playerid" element={<KahootProcess />} />
         <Route path="/result/:sessionid" element={<Result />} />
     </Routes>
     </>

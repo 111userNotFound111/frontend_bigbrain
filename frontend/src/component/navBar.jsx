@@ -109,7 +109,7 @@ export default function DashboardNavBar () {
       </Box>
     );
   }
-  if (location.pathname.includes('/') || location.pathname === '/kahoot.it' || location.pathname.includes('/kahootProcess')) {
+  if (location.pathname.includes('/') || location.pathname === '/player') {
     return (
       <Box sx={{ flexGrow: 1 }} >
         <AppBar position="static">
