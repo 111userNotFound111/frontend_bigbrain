@@ -39,7 +39,6 @@ function StartQuizModal (inputId) {
   const [id] = useState(inputId.inputQuizId);
   const [open, setOpen] = useState(false);
   const [sessionNumber, setSessionNumber] = useState(0);
-  console.log('sessionNumber', sessionNumber);
   const handleOpen = () => {
     setOpen(true);
     startQuizAPI(id);

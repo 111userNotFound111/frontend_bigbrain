@@ -13,9 +13,11 @@ export const quizQuestionPublicReturn = question => {
  the correct answers (minimum 1).
 */
 export const quizQuestionGetCorrectAnswers = question => {
-  return [
-    123,
-  ]; // For a single answer
+  let res = [];
+  question.correctAnswer.forEach((ca, index) => {if (ca) {
+    res.push(index) }
+  })
+  return res
 };
 
 /*
@@ -23,11 +25,7 @@ export const quizQuestionGetCorrectAnswers = question => {
  all of the answers, correct or incorrect.
 */
 export const quizQuestionGetAnswers = question => {
-  return [
-    123,
-    456,
-    678,
-  ]; // For a single answer
+  return question.answers; // For a single answer
 };
 
 /*
@@ -35,5 +33,6 @@ export const quizQuestionGetAnswers = question => {
  of the question once it starts. (Seconds)
 */
 export const quizQuestionGetDuration = question => {
-  return 10;
+  // return Number(question.timeLimit);
+  return 10000;
 };
