@@ -44,8 +44,9 @@ function playingGame () {
       setStage(stage + 1);
       callAPI('POST', `admin/quiz/${quizId}/advance`, localStorage.getItem('token'), '').then((data) => {
         console.log('data', data);
-      }).catch(() => {
+      }).catch((err) => {
         setMsg('The game is over');
+        console.log(err);
       });
       setMsg(`Question ${stage + 1}`);
     } else {
@@ -62,6 +63,8 @@ function playingGame () {
     setMsg('The game is over');
     callAPI('POST', `admin/quiz/${quizId}/end`, localStorage.getItem('token'), '').catch(() => {
       setMsg('The game is over');
+    }).catch((error) => {
+      console.log(error);
     });
     setResultDisable(false);
     handleSuccess();
