@@ -133,7 +133,7 @@ export default function PlayerProcess () {
       console.log('111111111update question begin here1111111')
       pollInterval = setInterval(() => {
         getQuestion();
-      }, 5000); // poll every 5 seconds
+      }, 5000);
     }
 
     return () => clearInterval(pollInterval);
