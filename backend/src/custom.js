@@ -33,6 +33,6 @@ export const quizQuestionGetAnswers = question => {
  of the question once it starts. (Seconds)
 */
 export const quizQuestionGetDuration = question => {
-  // return Number(question.timeLimit);
-  return 10000;
+    // return Number(question.timeLimit);
+  return question.timeLimit;
 };

@@ -46,6 +46,11 @@ function Dashboard ({ token }) {
   return (
     <>
       <NavBar />
+      {quizzes.length === 0 && (
+        <div style={{ display: 'flex', fontSize: '300%', alignItems: 'center', justifyContent: 'center', height: '70vh' }}>
+          No Quizzes Yet, Create A New Quiz
+        </div>
+      )}
       {/* <ResponsiveGrid /> */}
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

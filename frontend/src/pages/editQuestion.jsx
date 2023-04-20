@@ -3,7 +3,27 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Checkbox, Button } from '@mui/material';
 import CustomTextField from '../component/customTextField';
 import NavBar from '../component/navBar'
+import Hayden from '../assets/defaultThumbnail.jpeg'
+import styled from 'styled-components';
 
+const NewIframe = styled('iframe')({
+  width: '400px',
+  height: '400px',
+  '@media (max-width: 500px)': {
+    width: '100%',
+  },
+});
+const Thumbnail = styled('img')({
+  maxWidth: '70%',
+  maxHeight: '400px',
+  '@media (max-width: 1280px)': {
+    maxWidth: '70%',
+  },
+  '@media (max-width: 850px)': {
+    maxWidth: '70%',
+    maxHeight: '70%',
+  },
+});
 export default function editQuestion ({ setUpdatedQuestion }) {
   console.log('edit question function starts')
   const { quizId, questionIndex } = useParams();
@@ -110,17 +130,15 @@ export default function editQuestion ({ setUpdatedQuestion }) {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {thumbnail && thumbnail.match(/https?:\/\/(?:www\.)?youtube\.com\/watch\?v=(.*)/)
             ? (
-            <iframe
-              width='400'
-              height='450'
+            <NewIframe
               src={`https://www.youtube.com/embed/${RegExp.$1}`}
               title='YouTube'
               allowFullScreen
-            ></iframe>
+            />
               )
             : (
-            <img
-              src={thumbnail ? convertImg(thumbnail).src : 'https://i.imgur.com/3oqzZ8K.png'}
+            <Thumbnail
+              src={thumbnail ? convertImg(thumbnail).src : Hayden}
               alt='thumbnail'
               style={{ width: '100%', height: '400px' }}
             />
@@ -128,7 +146,7 @@ export default function editQuestion ({ setUpdatedQuestion }) {
         </div> <br />
 
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', }}>
-          <Button style={{ width: '60%' }} variant="contained" component="label">
+          <Button style={{ width: '50%' }} variant="contained" component="label">
               Upload Image
               <input
                 hidden

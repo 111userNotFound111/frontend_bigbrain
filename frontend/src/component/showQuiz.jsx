@@ -14,6 +14,7 @@ import CardMedia from '@mui/material/CardMedia';
 import StartQuiz from './startQuizModal.jsx';
 import { Button, Grid } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
+import Hayden from '../assets/defaultThumbnail.jpeg'
 function deleteQuiz (quizId) {
   CallAPI('DELETE', `admin/quiz/${quizId}`, localStorage.getItem('token'), '');
   window.location.href = '/dashboard';
@@ -32,7 +33,7 @@ export default function showQuizInCard (inputQuizId) {
       if (data.thumbnail !== null) {
         setQuizThumbnail(data.thumbnail);
       } else {
-        setQuizThumbnail('https://i.imgur.com/3oqzZ8K.png');
+        setQuizThumbnail(Hayden);
       }
       let time = 0;
       console.log('data', data.questions);
@@ -71,8 +72,8 @@ export default function showQuizInCard (inputQuizId) {
         </Typography>
         <CardMedia
         component="img"
-        height="120"
-        width="120"
+        height="220"
+        width="220"
         image={quizThumbnail}
         alt="quiz thumbnail"
       />

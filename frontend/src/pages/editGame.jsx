@@ -9,6 +9,16 @@ import callAPI from '../callAPI.jsx'
 import AddQuestionForm from '../component/addQuestionsForm.jsx'
 import CustomTextField from '../component/customTextField.jsx'
 import NavBar from '../component/navBar.jsx'
+import Hayden from '../assets/defaultThumbnail.jpeg'
+import { styled } from '@mui/material/styles';
+
+const Thumbnail = styled('img')({
+  maxWidth: '70%',
+  maxHeight: '400px',
+  '@media (max-width: 1280px)': {
+    maxWidth: '70%',
+  },
+});
 
 export default function editGame ({ token, updatedQuestion }) {
   const { quizId } = useParams();
@@ -22,7 +32,11 @@ export default function editGame ({ token, updatedQuestion }) {
     const quizData = await callAPI('GET', `admin/quiz/${quizId}`, token, {});
     console.log('fet quiz data begins')
     setNewQuizName(quizData.name);
-    setThumbnail(quizData.thumbnail);
+    if (quizData.thumbnail) {
+      setThumbnail(quizData.thumbnail);
+    } else {
+      setThumbnail(Hayden);
+    }
     setQuestions(quizData.questions);
     if (updatedQuestion) {
       setQuestions(updatedQuestion)
@@ -104,7 +118,7 @@ export default function editGame ({ token, updatedQuestion }) {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src={newThumbnail64 ? Base64ToImage(newThumbnail64).src : 'https://i.imgur.com/3oqzZ8K.png'} alt="thumbnail" style={{ width: '60%', height: '400px' }} />
+            <Thumbnail src={newThumbnail64 ? Base64ToImage(newThumbnail64).src : 'https://i.imgur.com/3oqzZ8K.png'} alt="thumbnail" />
           </div> <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button style={{ width: '60%' }} variant="contained" component="label">
