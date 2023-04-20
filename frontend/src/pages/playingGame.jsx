@@ -91,6 +91,9 @@ function playingGame () {
       </IconButton>
     </React.Fragment>
   );
+  function handleDashboard () {
+    navigate('/dashboard');
+  }
   return (
     <>
       <NavBar />
@@ -109,6 +112,8 @@ function playingGame () {
           <Button variant="contained" onClick={handleEndButtonClick}>End</Button>
           <br />
           <Button variant='contained' disabled={resultDisable} onClick={handleResultClick}>view result</Button>
+          <br />
+          <Button variant='contained' disabled={resultDisable} onClick={handleDashboard}>  DashBoard  </Button>
         </div>
       </div>
     </>

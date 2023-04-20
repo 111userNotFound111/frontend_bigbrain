@@ -11,6 +11,7 @@ import EditQuestion from './pages/editQuestion'
 import Home from './pages/home';
 import Result from './pages/result';
 import ShowPrevious from './pages/showPrevious';
+import PlayerResult from './pages/players/playerResult';
 // the Wrapper function is located inside the App router
 // App -> Wrapper
 function Wrapper () {
@@ -69,6 +70,7 @@ function Wrapper () {
         <Route path="/player/:playerid" element={<KahootProcess />} />
         <Route path="/result/:sessionid" element={<Result />} />
         <Route path="/showPrevious/:quizid" element={<ShowPrevious />} />
+        <Route path="/player/result/:playerid" element={<PlayerResult/>}/>
     </Routes>
     </>
   );

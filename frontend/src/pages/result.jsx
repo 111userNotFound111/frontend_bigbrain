@@ -115,9 +115,12 @@ function result () {
 
   if (havePlayer === false) {
     return (
+      <>
+      <NavBar />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
         <h1>No body join this Game</h1>
       </div>
+      </>
     )
   } else {
     return (
