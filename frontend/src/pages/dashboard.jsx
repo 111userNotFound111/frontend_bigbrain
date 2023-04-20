@@ -52,8 +52,8 @@ function Dashboard ({ token }) {
         </div>
       )}
       {/* <ResponsiveGrid /> */}
-      <Box className="parent box" sx={{ flexGrow: 1 }}>
-      <Grid className="parent grid" container columns={{ xs: 4, sm: 8, md: 12 }}>
+      <Box className="parent box" sx={{ flexGrow: 1, }}>
+      <Grid className="parent grid" container columns={{ xs: 4, sm: 8, md: 12 }} >
         {quizzes.map((quiz, index) => (
           <Item key={index} sx={{ width: '300px', margin: '8px' }}>< ShowQuizInCard inputQuizId={quiz.id} /></Item>
         ))}

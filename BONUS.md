@@ -1,4 +1,4 @@
-1. we set a home page for admin and user to choose which role they play. btw player is not requried to log in.
+1. we set a home page for admin and user to choose which role they play. player is not requried to log in.
 
 2. when we have not login in, we click the admin button at home page, then page will nagivate to sign in page. if we logined, it will nagivate to dashboard.
 
@@ -8,4 +8,6 @@
 4. we set default image for new quiz.
 
 5. admin cannot create quiz without name. When name input is empty, 'confirm' button is disabled.
+
+6. when allow admin to download quiz as JSON files
 
