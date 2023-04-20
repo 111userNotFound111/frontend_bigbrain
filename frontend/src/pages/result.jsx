@@ -1,6 +1,6 @@
 import * as React from 'react';
 import NavBar from '../component/navBar.jsx';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import callAPI from '../callAPI.jsx'
 import { useEffect } from 'react'
 import Table from '@mui/material/Table';
@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
 // import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
@@ -18,6 +19,7 @@ function result () {
   const [havePlayer, setHavePlayer] = React.useState(true);
   const [barData, setBarData] = React.useState([]);
   const { sessionid } = useParams();
+  const navigate = useNavigate();
 
   const BarChartExample = () => (
     <BarChart width={600} height={300} data={barData}>
@@ -113,6 +115,10 @@ function result () {
     setBarData(data);
   }, [playerGetScore]);
 
+  function handleDash () {
+    navigate('/dashboard')
+  }
+
   if (havePlayer === false) {
     return (
       <>
@@ -155,6 +161,9 @@ function result () {
             {/* barchart */}
           <BarChartExample />
           </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <br /> <Button variant='contained' onClick={handleDash}>Back To Dashboard</Button>
         </div>
       </>
     )

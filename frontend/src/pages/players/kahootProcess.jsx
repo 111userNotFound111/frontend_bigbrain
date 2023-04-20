@@ -172,7 +172,7 @@ export default function PlayerProcess () {
   }, [endPage]);
   // direct to view result page
   function handleViewResult () {
-    navigate(`/player/result/${playerid}`)
+    navigate(`/player/playerResult/${playerid}`)
   }
   // direct back to home page
   function handleBackPage () {

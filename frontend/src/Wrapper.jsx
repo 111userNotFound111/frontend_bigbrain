@@ -20,6 +20,8 @@ function Wrapper () {
   const navigate = useNavigate();
   const location = useLocation();
   const [updatedQuestion, setUpdatedQuestion] = React.useState(null);
+  const [updatedTitle, setUpdatedTitle] = React.useState('');
+  const [updatedThumb, setUpdatedThumb] = React.useState('');
 
   // if sign in or sign up success, store token to localStorage and navigate to dashboard
   function storeToken (tokenInput) {
@@ -63,14 +65,14 @@ function Wrapper () {
         <Route path="/signin" element={<SignIn onSuccess={storeToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token}/>} />
         <Route path="/playingGame/quizid/:quizId/sessionid/:sessionId" element={<PlayingGame />} />
-        <Route path="/editGame/:quizId" element={<EditGame token={token } updatedQuestion={updatedQuestion}/>} />
+        <Route path="/editGame/:quizId" element={<EditGame token={token } updatedQuestion={updatedQuestion} setUpdatedTitle={setUpdatedTitle} updatedTitle={updatedTitle} setUpdatedThumb={setUpdatedThumb} updatedThumb={updatedThumb}/>} />
         <Route path="/editGame/:quizId/:questionIndex" element={<EditQuestion setUpdatedQuestion={setUpdatedQuestion} />} />
         {/* player */}
         <Route path="/player" element={<Kahoot />} />
         <Route path="/player/:playerid" element={<KahootProcess />} />
         <Route path="/result/:sessionid" element={<Result />} />
         <Route path="/showPrevious/:quizid" element={<ShowPrevious />} />
-        <Route path="/player/result/:playerid" element={<PlayerResult/>}/>
+        <Route path="/player/playerResult/:playerid" element={<PlayerResult/>}/>
     </Routes>
     </>
   );

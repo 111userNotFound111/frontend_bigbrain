@@ -1,5 +1,5 @@
 // import libraries
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, } from 'react-router-dom';
 
 // import components
@@ -20,22 +20,32 @@ const Thumbnail = styled('img')({
   },
 });
 
-export default function editGame ({ token, updatedQuestion }) {
+export default function editGame ({ token, updatedQuestion, setUpdatedTitle, updatedTitle, setUpdatedThumb, updatedThumb }) {
   const { quizId } = useParams();
   const navigate = useNavigate();
   const [newQuizName, setNewQuizName] = useState('')
   const [newThumbnail64, setThumbnail] = useState(null);
   const [questions, setQuestions] = useState([])
+  const downloadFile = useRef(null);
 
   // Second store game info into variables every time quizInfo changes
   async function fetchQuizData () {
     const quizData = await callAPI('GET', `admin/quiz/${quizId}`, token, {});
     console.log('fet quiz data begins')
-    setNewQuizName(quizData.name);
-    if (quizData.thumbnail) {
-      setThumbnail(quizData.thumbnail);
+    if (updatedTitle) {
+      setNewQuizName(updatedTitle);
     } else {
-      setThumbnail(Hayden);
+      setNewQuizName(quizData.name);
+    }
+    if (updatedThumb) {
+      console.log('TRUE', updatedThumb)
+      setThumbnail(updatedThumb);
+    } else {
+      if (quizData.thumbnail) {
+        setThumbnail(quizData.thumbnail);
+      } else {
+        setThumbnail(Hayden);
+      }
     }
     setQuestions(quizData.questions);
     if (updatedQuestion) {
@@ -97,6 +107,40 @@ export default function editGame ({ token, updatedQuestion }) {
     setQuestions(updatedQuestions);
   }
 
+  // save file as JSON
+  function saveFileJSON () {
+    const file = {
+      questions,
+      name: newQuizName,
+      thumbnail: newThumbnail64,
+    };
+    const jsonString = JSON.stringify(file, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const downloadLink = URL.createObjectURL(blob);
+    if (downloadFile.current) {
+      downloadFile.current.href = downloadLink;
+      downloadFile.current.download = `${newQuizName}.json`;
+      downloadFile.current.click();
+    }
+  }
+  // upload and store JSON
+  function JSONUpload (fileInput) {
+    const file = fileInput.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const jsonData = JSON.parse(event.target.result);
+        if (jsonData.name) setNewQuizName(jsonData.name);
+        if (jsonData.name) setUpdatedTitle(jsonData.name);
+        if (jsonData.thumbnail) setThumbnail(jsonData.thumbnail);
+        if (jsonData.thumbnail) setUpdatedThumb(jsonData.thumbnail);
+        if (jsonData.questions) setQuestions(jsonData.questions);
+      } catch (error) {
+        console.error('Error parsing JSON file:', error);
+      }
+    };
+    reader.readAsText(file);
+  }
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ marginBottom: '50px' }}>
@@ -106,6 +150,17 @@ export default function editGame ({ token, updatedQuestion }) {
           <span>Game ID : {quizId}</span>
         </div> <br />
         <div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button variant="contained" component="label" style={{ marginTop: '20px', marginBottom: '20px', color: 'white', width: '400px' }}>
+                Upload JSON
+                <input
+                  hidden
+                  accept=".json,application/json"
+                  type="file"
+                  onChange={JSONUpload}
+                />
+            </Button>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <CustomTextField
               required
@@ -121,7 +176,7 @@ export default function editGame ({ token, updatedQuestion }) {
             <Thumbnail src={newThumbnail64 ? Base64ToImage(newThumbnail64).src : 'https://i.imgur.com/3oqzZ8K.png'} alt="thumbnail" />
           </div> <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button style={{ width: '60%' }} variant="contained" component="label">
+            <Button style={{ width: '400px' }} variant="contained" component="label">
               Upload Image
               <input
                 hidden
@@ -163,8 +218,13 @@ export default function editGame ({ token, updatedQuestion }) {
           <hr />
           <br /> <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button type="submit" variant="contained" onClick={editQuizDetails} style={{ backgroundColor: 'green', color: 'white', width: '60%' }}>Edit Game</Button>
+            <Button type="submit" variant="contained" onClick={editQuizDetails} style={{ backgroundColor: 'green', color: 'white', width: '400px' }}>Edit Game</Button>
           </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button variant="contained" color="primary" onClick={saveFileJSON} style={{ marginTop: '20px', backgroundColor: '#FFBF00', color: 'white', width: '400px' }}>
+              Save as JSON
+            </Button>
+          </div><a ref={downloadFile} style={{ display: 'none' }} />
         </div>
       </form>
     </div>

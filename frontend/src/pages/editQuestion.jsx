@@ -92,95 +92,104 @@ export default function editQuestion ({ setUpdatedQuestion }) {
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ marginBottom: '50px' }}>
-      <NavBar /> <br />
-      <h1>Edit Question: {title} </h1>
-      <span>Quiz Id: {quizId} Question Index: {questionIndex} </span>
-      <br /> <br />
+        <NavBar /> <br />
+        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', }}>
+        <h1>Edit Question:    {title} </h1>
+        <span>Quiz Id: {quizId} </span>
+        <br /> <br />
+        </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', }}>
-        <CustomTextField
-          autoFocus
-          margin="dense"
-          label="Question Title"
-          value={title}
-          style={{ width: '90%' }}
-          onChange={(title) => setTitle(title.target.value)}
-        />
-        <CustomTextField
-          margin="dense"
-          label="Time Limit (seconds)"
-          value={timeLimit}
-          style={{ width: '90%' }}
-          onChange={(limit) => setTimeLimit(limit.target.value)}
-        />
-        <CustomTextField
-          margin="dense"
-          label="Points Allocated"
-          value={pointsAllocated}
-          style={{ width: '90%' }}
-          onChange={(points) => setPointsAllocated(points.target.value)}
-        />
-        <h3>Add A Youtube Link OR Upload A Thumbnail</h3>
-        <CustomTextField
+        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', }}>
+          <div style={{ width: '60%' }}>
+          <CustomTextField
+            autoFocus
             margin="dense"
-            label="Youtube URL"
-            fullWidth
-            onChange={(e) => setUrl(e.target.value)}
-        />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          {thumbnail && thumbnail.match(/https?:\/\/(?:www\.)?youtube\.com\/watch\?v=(.*)/)
-            ? (
-            <NewIframe
-              src={`https://www.youtube.com/embed/${RegExp.$1}`}
-              title='YouTube'
-              allowFullScreen
-            />
-              )
-            : (
-            <Thumbnail
-              src={thumbnail ? convertImg(thumbnail).src : Hayden}
-              alt='thumbnail'
-              style={{ width: '100%', height: '400px' }}
-            />
-              )}
-        </div> <br />
-
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', }}>
-          <Button style={{ width: '50%' }} variant="contained" component="label">
-              Upload Image
-              <input
-                hidden
-                accept="image/*"
-                multiple
-                type="file"
-                onChange={handleImageChange}
-              />
-          </Button>
-        </div>
-    </div>
-
-        <div>
-        <hr />
-          <h2 style={{ fontWeight: 'bold' }}>Input Answer and Select the Correct Answer</h2>
-          <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-            {Array.from({ length: 6 }, (_, index) => (
-              <div key={index} style={{ display: 'flex', alignItems: 'center', width: '90%' }}>
-                  <Checkbox
-                    checked={correctAnswer[index]}
-                    onChange={() => handleCheckboxChange(index)}
-                  />
-                  <CustomTextField
-                    margin="dense"
-                    label={`Option ${index + 1}`}
-                    value={answer[index] ? answer[index] : ''}
-                    onChange={(answer) => handleOptionChange(index, answer.target.value)}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-            ))}
-            <Button type='submit' variant='contained' color='primary' style={{ width: '50%', }}>Finish Edit Question</Button>
+            label="Question Title"
+            value={title}
+            style={{ width: '100%' }}
+            onChange={(title) => setTitle(title.target.value)}
+          />
+          <CustomTextField
+            margin="dense"
+            label="Time Limit (seconds)"
+            value={timeLimit}
+            style={{ width: '100%' }}
+            onChange={(limit) => setTimeLimit(limit.target.value)}
+          />
+          <CustomTextField
+            margin="dense"
+            label="Points Allocated"
+            value={pointsAllocated}
+            style={{ width: '100%' }}
+            onChange={(points) => setPointsAllocated(points.target.value)}
+          />
+          <h3>Add A Youtube Link OR Upload A Thumbnail</h3>
+          <CustomTextField
+              margin="dense"
+              label="Youtube URL"
+              style={{ width: '100%' }}
+              onChange={(e) => setUrl(e.target.value)}
+          />
           </div>
-        </div>
+
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {thumbnail && thumbnail.match(/https?:\/\/(?:www\.)?youtube\.com\/watch\?v=(.*)/)
+              ? (
+              <NewIframe
+                src={`https://www.youtube.com/embed/${RegExp.$1}`}
+                title='YouTube'
+                allowFullScreen
+              />
+                )
+              : (
+              <Thumbnail
+                src={thumbnail ? convertImg(thumbnail).src : Hayden}
+                alt='thumbnail'
+                style={{ width: '100%', height: '400px' }}
+              />
+                )}
+          </div> <br />
+
+          <div style={{ display: 'flex', justifyContent: 'center', width: '60%', }}>
+            <Button style={{ width: '50%' }} variant="contained" component="label">
+                Upload Image
+                <input
+                  hidden
+                  accept="image/*"
+                  multiple
+                  type="file"
+                  onChange={handleImageChange}
+                />
+            </Button>
+          </div>
+      </div>
+
+          <div>
+          <hr />
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', }}>
+            <h2 style={{ fontWeight: 'bold' }}>Input Answer and Select the Correct Answer</h2>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+              {Array.from({ length: 6 }, (_, index) => (
+                <div key={index} style={{ display: 'flex', alignItems: 'center', width: '60%' }}>
+                    <Checkbox
+                      checked={correctAnswer[index]}
+                      onChange={() => handleCheckboxChange(index)}
+                    />
+                    <CustomTextField
+                      margin="dense"
+                      label={`Option ${index + 1}`}
+                      value={answer[index] ? answer[index] : ''}
+                      onChange={(answer) => handleOptionChange(index, answer.target.value)}
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+              ))}
+              <div style={{ display: 'flex', justifyContent: 'center', width: '60%', }}>
+              <Button type='submit' variant='contained' color='primary' style={{ width: '50%', }}>Finish Edit Question</Button>
+              </div>
+            </div>
+          </div>
       </form>
     </div>
   );

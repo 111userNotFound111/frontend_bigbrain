@@ -29,7 +29,7 @@ export default function AddQuestionModal ({ onSubmit }) {
     console.log('pointsAllocated: ', pointsAllocated)
     console.log('Answer: ', answer);
     console.log('Correct answer: ', correctAnswer);
-    // Handle form submission logic here
+    // Handle form submission
     const newQuestion = {
       title,
       thumbnail,
@@ -70,8 +70,8 @@ export default function AddQuestionModal ({ onSubmit }) {
   }
 
   return (
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <Button variant="contained" style={{ width: '60%' }} onClick={handleOpen}>Add Question</Button>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', }}>
+            <Button variant="contained" style={{ width: '400px' }} onClick={handleOpen}>Add Question</Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Add Question</DialogTitle>
                 <DialogContent>
@@ -79,30 +79,29 @@ export default function AddQuestionModal ({ onSubmit }) {
                         autoFocus
                         margin="dense"
                         label="Question Text"
-                        fullWidth
+                        style={{ width: '60%' }}
                         //   value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={(text) => setTitle(text.target.value)}
                     />
                     <CustomTextField
                         margin="dense"
                         label="Time Limit (seconds)"
-                        fullWidth
+                        style={{ width: '60%' }}
                         //   value={timeLimit}
-                        onChange={(e) => setTimeLimit(e.target.value)}
+                        onChange={(time) => setTimeLimit(time.target.value)}
                     />
                     <CustomTextField
                         margin="dense"
                         label="Points Allocated"
-                        fullWidth
+                        style={{ width: '60%' }}
                         //   value={pointsAllocated}
-                        onChange={(e) => setPointsAllocated(e.target.value)}
+                        onChange={(points) => setPointsAllocated(points.target.value)}
                     /> <br />
                     <span style={{ fontWeight: 'bold' }}> Add A Youtube Link OR Upload A Thumbnail</span> <br />
                     <CustomTextField
                         margin="dense"
                         label="Youtube URL"
-                        fullWidth
-                        onChange={(e) => setUrl(e.target.value)}
+                        onChange={(url) => setUrl(url.target.value)}
                     />
                     <div>
                         <input type="file" accept="image/*" style={{ marginBottom: '10px' }} onChange={uploadThumbnail} />
@@ -120,7 +119,7 @@ export default function AddQuestionModal ({ onSubmit }) {
                                 label={`Option ${index + 1}`}
                                 fullWidth
                                 //   value={answer[index]}
-                                onChange={(e) => handleOptionChange(index, e.target.value)}
+                                onChange={(option) => handleOptionChange(index, option.target.value)}
                             />
                         </div>
                     ))}
