@@ -73,7 +73,7 @@ A series of features below need to be implemented in your ReactJS app to operate
    * The ability to optionally attach a URL to a youtube video, or upload a photo, to enhance the question being asked).
    * Anywhere between 2 and 6 answers, that each contain the answer as a string
 
-### 2.3. Feature 3. Admin Start, Stop, Results of game (12% for solo, 10% for pairs)
+### 2.3. Feature 3. Admin Start, Stop, Results of game
 
 #### 2.3.1. Starting a game
  * On the dashboard page, add the ability to start a new session.
@@ -93,7 +93,7 @@ A series of features below need to be implemented in your ReactJS app to operate
    * Some chart showing the average response/answer time for each question
    * Any other interesting information you see fit
 
-### 2.4. Feature 4. Player able to join and play game (12% for solo, 10% for pairs)
+### 2.4. Feature 4. Player able to join and play game
 
 #### 2.4.1. Play Join
  * A unique route must exist for this screen
