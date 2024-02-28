@@ -5,13 +5,6 @@ ReactJS: BigBrain
 3. The Support (Backend)
 4. Constraints & Assumptions
 
-## 0. Change Log
-
-* 02/04/2023: General edit clause added to 2.2.2
-* 02/04/2023: Comments about advancing added to 2.3.1
-* 04/04/2023: Few helpful tips and elaborations based on questions students ask - see commit for more details.
-* 11/04/2023: Clarified a lot of "game" "session" language that some students found confusing. Updated Typescript link.
-* 15/04/2023: Fixed /admin/quiz/new example response in Swagger.
 
 ## 1. Before you start
 
@@ -191,9 +184,6 @@ Navigate to the `frontend` folder and run `npm install` to install all of the de
 
 Please note that some properties that the backend takes in are defined as blank objects. These are objects that can be defined by you, as the backend will simply store your object on some routes and then return it to you on other routes (i.e. the backend doesn't need to understand the schema of some objects you pass it). An example of this object is all of the data associated with a quiz.
 
-This approach we've taken is actually designed to make the assignment _easier_, as it gives you control without having to worry about backend architecture.
-
-Don't forget to check out our helpful resources about [ReactJS](https://cgi.cse.unsw.edu.au/~cs6080/23T1/help/resources/reactjs).
 
 ### 3.2. The Backend (provided)
 
