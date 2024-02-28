@@ -118,7 +118,7 @@ A series of features below need to be implemented in your ReactJS app to operate
  * After the final question is answered, a page is displayed showing the key results:
    * The player's performance in each question
 
-### 2.5. Advanced Features (0% for solo, 10% for pairs)
+### 2.5. Advanced Features 
 
 #### 2.5.1. Game Upload
  * For `2.2.1`, when a new game is created, the user can optionally upload a .csv or .json (you choose) file containing the full data for a game. The data structure is validated on the frontend before being passed to the backend normally. You should provide a copy of an example data file in your project repo ()
