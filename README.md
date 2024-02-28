@@ -1,14 +1,9 @@
-# Assessment 4 - ReactJS: BigBrain
+ReactJS: BigBrain
 
 1. Background & Motivation
 2. The Task (Frontend)
 3. The Support (Backend)
 4. Constraints & Assumptions
-5. Teamwork
-6. Marking Criteria
-7. Originality of Work
-8. Submission
-9. Late Submission Policy
 
 ## 0. Change Log
 
